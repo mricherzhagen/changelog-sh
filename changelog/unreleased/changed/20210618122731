@@ -1,0 +1,1 @@
+Install script does not call `sudo` anymore. Use alias or $PATH
