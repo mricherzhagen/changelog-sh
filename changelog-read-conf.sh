@@ -2,6 +2,7 @@
 
 function _execute_conf_file {
   source $1
+  export CHANGELOG_HEADER
 }
 
 #Always read default config from $CHANGE

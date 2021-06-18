@@ -16,8 +16,7 @@ function _changelogsh_preview {
     return
   fi
 
-  echo "# What's new?"
-  echo ""
+  echo "$CHANGELOG_HEADER"
   echo "## [$raw_version]"
 
   for dir in changelog/$expanded/*; do
