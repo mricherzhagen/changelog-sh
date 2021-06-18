@@ -23,7 +23,8 @@ function _changelogsh_main {
   preview        Preview the unreleased changes in Markdown format
   full-preview   Preview the full changelog including unreleased changes in Markdown format
   release        Release the changes for the current version
-  upgrade        Pulls the latest master branch from GitHub\n"
+  upgrade        Pulls the latest master branch from GitHub
+  [changetype]   Shorthand for 'new' [changetype]\n"
 
   if [ "$#" -eq 0 ]; then
     printf "$usage"
@@ -58,6 +59,11 @@ function _changelogsh_main {
   if [ $1 == 'upgrade' ]; then
     _changelogsh_upgrade ${@:2}
     return
+  fi
+  
+  if [ ! -z "$CHANGELOG_ALLOWED_CHANGETYPES" ] && echo "$1" | grep -Fqi "$CHANGELOG_ALLOWED_CHANGETYPES"; then
+      _changelogsh_new ${@:1}
+      return
   fi
 
   printf "Invalid command."

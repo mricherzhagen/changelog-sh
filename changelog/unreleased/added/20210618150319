@@ -1,0 +1,1 @@
+Shorthand for `change new [changetype] [message]` command. Can directly call `change [changetype] [message]` without specifying `new`.
