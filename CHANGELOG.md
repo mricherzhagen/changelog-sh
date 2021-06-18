@@ -1,5 +1,15 @@
 # What's new?
 
+## [2.2.0] - 2021-06-18
+### Added
+- `CHANGELOG_ALLOWED_CHANGETYPES` option to specify allowed changetypes
+
+### Changed
+- `change new` only allows changetypes from `CHANGELOG_ALLOWED_CHANGETYPES`.
+
+### Fixed
+- Always convert changetype to lowercase when creating changetype folder
+
 ## [2.1.0] - 2021-06-18
 ### Added
 - `CHANGELOG_GIT_STAGE_RELEASE` option. If enabled `change release` will automatically stage changes to `CHANGELOG.md` and changefiles. Defaults to `true.`
