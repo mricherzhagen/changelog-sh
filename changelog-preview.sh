@@ -36,7 +36,11 @@ function _changelogsh_preview_unreleased {
     raw_version=$1
   fi
 
-  echo "## [$raw_version]"
+  if [ $CHANGELOG_INCLUDE_TIMESTAMP = true ]; then
+    echo "## [$raw_version] - `date +%F`"
+  else
+    echo "## [$raw_version]"
+  fi
 
   for dir in changelog/unreleased/*; do
     if [ "$(ls -A $dir)" ]; then
