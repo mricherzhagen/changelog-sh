@@ -1,0 +1,1 @@
+`CHANGELOG_RELEASE_STRATEGY` option to control what happens with the changefiles on release. Can be either `move` or `delete`. Defaults to `delete`.

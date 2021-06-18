@@ -24,5 +24,11 @@ function _changelogsh_release {
     rm $NEW_CHANGELOG
     exit 1
   fi
-  mv 'changelog/unreleased' "changelog/$expanded"
+  if [ "$CHANGELOG_RELEASE_STRATEGY" = 'move' ]; then
+    mv 'changelog/unreleased' "changelog/$expanded"
+  elif [ "$CHANGELOG_RELEASE_STRATEGY" = 'delete' ]; then
+    rm -r changelog/unreleased
+  else
+      >&2 echo "ERORR: \$CHANGELOG_RELEASE_STRATEGY has to be either 'move' or 'delete'. Keeping unreleased changes.";
+  fi
 }
