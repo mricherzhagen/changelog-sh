@@ -23,6 +23,9 @@ function _changelogsh_new {
 
   if [ "$#" -ge 2 ]; then
     echo ${@:2} > "changelog/unreleased/$type/$timestamp"
+    if [ $CHANGELOG_GIT_STAGE_CHANGE = true ]; then
+        git add "changelog/unreleased/$type/$timestamp"
+    fi
   fi
 
 }
