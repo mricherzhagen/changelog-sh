@@ -1,5 +1,10 @@
 # What's new?
 
+## [2.1.0] - 2021-06-18
+### Added
+- `CHANGELOG_GIT_STAGE_RELEASE` option. If enabled `change release` will automatically stage changes to `CHANGELOG.md` and changefiles. Defaults to `true.`
+- `CHANGELOG_GIT_STAGE_CHANGE` option. If enabled `change new` will automatically stage the new changefile. Defaults to `true`.
+
 ## [2.0.0] - 2021-06-18
 ### Added
 - Config file `.changelog-sh-conf.sh` will be read from `$CHANGE` and git root folder if existent
