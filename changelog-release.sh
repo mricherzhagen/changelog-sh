@@ -14,6 +14,11 @@ function _changelogsh_release {
 
   version=$1
   expanded=$(_changelogsh_raw_to_expanded $version)
+  
+  if grep -Fq "## [$version]" $CHANGELOG_FILENAME; then
+    >&2 echo "Error: Version $version already exists in $CHANGELOG_FILENAME";
+    exit 1;
+  fi
  
   NEW_CHANGELOG=`mktemp $CHANGELOG_MKTEMP_OPTIONS`
   if _changelogsh_preview $version > $NEW_CHANGELOG; then
