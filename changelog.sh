@@ -5,6 +5,7 @@ if [ ! -n "$CHANGE" ]; then
 fi
 
 source $CHANGE/changelog-helpers.sh
+source $CHANGE/changelog-read-conf.sh
 
 source $CHANGE/changelog-init.sh
 source $CHANGE/changelog-new.sh
