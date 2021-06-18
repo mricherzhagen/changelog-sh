@@ -1,2 +1,8 @@
+CHANGELOG_FILENAME='CHANGELOG.md'
 CHANGELOG_HEADER="# What's new?
 "
+
+
+#INTERNAL
+CHANGELOG_MKTEMP_OPTIONS="--tmpdir changelog-sh-tmp.XXXXXXXX"
+CHANGELOG_DIFF_OPTIONS="--color=always -u"

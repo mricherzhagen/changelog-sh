@@ -18,11 +18,12 @@ function _changelogsh_main {
   
   These are the available commands:
 
-  init      Initialize changelog in current directory
-  new       Register new change in the changelog
-  preview   Preview the changelog in Markdown format
-  release   Release the changes for the current version
-  upgrade   Pulls the latest master branch from GitHub\n"
+  init           Initialize changelog in current directory
+  new            Register new change in the changelog
+  preview        Preview the unreleased changes in Markdown format
+  full-preview   Preview the full changelog including unreleased changes in Markdown format
+  release        Release the changes for the current version
+  upgrade        Pulls the latest master branch from GitHub\n"
 
   if [ "$#" -eq 0 ]; then
     printf "$usage"
@@ -40,6 +41,11 @@ function _changelogsh_main {
   fi
 
   if [ $1 == 'preview' ]; then
+    _changelogsh_preview_unreleased ${@:2}
+    return
+  fi
+  
+  if [ $1 == 'full-preview' ]; then
     _changelogsh_preview ${@:2}
     return
   fi
