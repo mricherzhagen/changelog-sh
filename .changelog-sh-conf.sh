@@ -9,6 +9,14 @@ CHANGELOG_RELEASE_STRATEGY='delete'
 CHANGELOG_GIT_STAGE_RELEASE=true
 CHANGELOG_GIT_STAGE_CHANGE=true
 
+# Specify all allowed change types: Make sure to not include any empty lines.
+CHANGELOG_ALLOWED_CHANGETYPES="Added
+Changed
+Deprecated
+Removed
+Fixed
+Security"
+
 #INTERNAL
 CHANGELOG_MKTEMP_OPTIONS="--tmpdir changelog-sh-tmp.XXXXXXXX"
 CHANGELOG_DIFF_OPTIONS="--color=always -u"

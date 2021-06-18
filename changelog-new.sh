@@ -14,6 +14,11 @@ function _changelogsh_new {
   fi
 
   if [ "$#" -ge 1 ]; then
+    if [ ! -z "$CHANGELOG_ALLOWED_CHANGETYPES" ] && ! echo "$1" | grep -Fqi "$CHANGELOG_ALLOWED_CHANGETYPES"; then
+        >&2 echo "ERROR: '$1' is not an allowed change type."
+        >&2 echo "Allowed change types are": $CHANGELOG_ALLOWED_CHANGETYPES
+        exit 1
+    fi
     type=`echo "$1" | tr '[:upper:]' '[:lower:]'`
   fi
 
