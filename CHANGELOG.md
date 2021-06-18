@@ -1,5 +1,12 @@
 # What's new?
 
+## [2.2.1] - 2021-06-18
+### Added
+- Shorthand for `change new [changetype] [message]` command. Can directly call `change [changetype] [message]` without specifying `new`.
+
+### Changed
+- `change release` checks if the `CHANGELOG.md` already contains an entry for the specified version
+
 ## [2.2.0] - 2021-06-18
 ### Added
 - `CHANGELOG_ALLOWED_CHANGETYPES` option to specify allowed changetypes

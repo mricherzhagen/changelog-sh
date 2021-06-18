@@ -1,1 +1,0 @@
-`change release` checks if the `CHANGELOG.md` already contains an entry for the specified version
