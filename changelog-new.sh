@@ -14,7 +14,7 @@ function _changelogsh_new {
   fi
 
   if [ "$#" -ge 1 ]; then
-    type=$1
+    type=`echo "$1" | tr '[:upper:]' '[:lower:]'`
   fi
 
   if [ ! -d "changelog/unreleased/$type" ]; then
