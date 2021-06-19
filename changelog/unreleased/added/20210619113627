@@ -1,0 +1,1 @@
+ZSH-Completion script for the `change` command. (Known Bug: Also suggests files when `alias` for `changelog.sh` is used.)
