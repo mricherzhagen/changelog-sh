@@ -1,10 +1,12 @@
 # Changelog.sh
 
-Changelog.sh is a tool to keep a changelog without conflicts. It supports rendering your changelog into a standard [keepachangelog](https://keepachangelog.com) format.
+`changelog.sh` is a tool to keep a changelog without conflicts. It supports rendering your changelog into a standard [keepachangelog](https://keepachangelog.com) format.
+
+This is a **fork** of [whitecloakph/changelog-sh](https://github.com/whitecloakph/changelog-sh) with *extensive* changes to the functionality. See the [CHANGELOG.md](CHANGELOG.md) for a list of changes.
 
 ## Motivation
 
-Maintaining a CHANGELOG.md is annoying because it's prone to merge conflict. Multiple developer adding line to a single file will confuse git as to which change should go first. 
+Maintaining a `CHANGELOG.md` is annoying because it's prone to merge conflict. Multiple developer adding line to a single file will confuse git as to which change should go first.
 
 ## Solution
 
@@ -12,69 +14,99 @@ The solution is to create a file for each changelog entry that can be commited t
 
 ## How it works
 
+New changes are recorded using the `change new [changetype] [changelog entry]` command. Each change is written into a `changelog/unreleased` directory as a separate file.
+
 Having a `changelog` directory looking like this:
 
 ```
 changelog/
-  2.0.1/
+  unreleased/
     added/
-      20180406201409
-    fixed/
-      20180406202703
-      20180411092409
-  2.0.0/
+      19860806201409
     changed/
-      20180322144612
-  1.1.0/
-    added/
-      20180402183256
-  1.0.0/
-    added/
-      20180405192450
+      19860806144612
+    fixed/
+      19860806092409
+      19860806202703
 ```
 
-would yield a CHANGELOG.md that would like like this:
+would yield a new entry in the `CHANGELOG.md` that would like this:
 
-```
-## [2.0.1]
+```markdown
+## [Unreleased] - 1987-07-27
 ### Added
 - Never gonna give you up
 
-### Fixed
-- [123] Never gonna let you down
-- [124] Never gonna run around and desert you
-
-## [2.0.0]
 ### Changed
-- Never gonna make you cry
+- Never gonna let you down
 
-## [1.1.0]
+### Fixed
+- [124] Never gonna run around and desert you
+- [123] Never gonna make you cry
+```
+
+This can be displayed using the `change preview` command.
+
+When a new release is created this entry is inserted into the `CHANGELOG.md` file and the files in `changelog/unreleased` are automatically deleted or moved.
+
+The `change full-preview 2.0.0` command can show you what the `CHANGELOG.md` file would look like if the unreleased changes were to be released as version `2.0.0`:
+```markdown
+# What's new?
+
+## [2.0.0] - 1987-07-27
+### Added
+- Never gonna give you up
+
+### Changed
+- Never gonna let you down
+
+### Fixed
+- [124] Never gonna run around and desert you
+- [123] Never gonna make you cry
+
+## [1.1.0] - 1987-05-03
 ### Added
 - Never gonna say good bye
 
-## [1.0.0]
+## [1.0.0] - 1986-12-07
 ### Added
 - Never gonna tell a lie and hurt you
 ```
+
+The `change release 2.0.0` command can then be used to write the new version into the `CHANGELOG.md` file and remove the files in `changelog/unreleased`, so they are not released again.
 
 ## Getting Started
 
 ### Basic Installation
 
-Changelog.sh is installed by running one of the following commands in your terminal. You can install this via the command-line with either `curl` or `wget`.
+Changelog.sh is installed by running one of the following commands in your terminal. You can install this via the command-line with either `curl` or `wget`. (Take a look at the [`install.sh`](https://raw.githubusercontent.com/mricherzhagen/changelog-sh/master/tools/install.sh) first!)
 
 #### via curl
 
 ```shell
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/whitecloakph/changelog-sh/master/tools/install.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/mricherzhagen/changelog-sh/master/tools/install.sh)"
 ```
 
 #### via wget
 
 ```shell
-sh -c "$(wget https://raw.githubusercontent.com/whitecloakph/changelog-sh/master/tools/install.sh)"
+sh -c "$(wget https://raw.githubusercontent.com/mricherzhagen/changelog-sh/master/tools/install.sh)"
 ```
 
+### Shell autocompletion
+
+There is experimental autocompletion support for `bash` and `zsh` available. 
+#### for `bash`
+Add to your `.bashrc`:
+```shell
+source ~/.change/tools/change-completion.bash
+```
+
+#### for `zsh`
+Add to your `.zshrc`:
+```shell
+source ~/.change/tools/_change-completion.zsh
+```
 
 ### Basic Usage
 
