@@ -1,5 +1,16 @@
 # What's new?
 
+## [2.3.0] - 2021-06-19
+### Added
+- Bash-Completion script for the `change` command.
+- ZSH-Completion script for the `change` command. (Known Bug: Also suggests files when `alias` for `changelog.sh` is used.)
+
+### Changed
+- Updated `README.md`
+
+### Fixed
+- Suppress error message when `change` is called outside of a `git` repository
+
 ## [2.2.1] - 2021-06-18
 ### Added
 - Shorthand for `change new [changetype] [message]` command. Can directly call `change [changetype] [message]` without specifying `new`.
