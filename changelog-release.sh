@@ -2,7 +2,7 @@
 
 function _changelogsh_release {
 
-  if [ ! -d "changelog/unreleased/" ]; then
+  if [ ! -d "$CHANGELOG_FOLDER/unreleased/" ]; then
     printf "Nothing to release.\n"
     return
   fi
@@ -47,15 +47,15 @@ function _changelogsh_release {
   fi
   if [ "$CHANGELOG_RELEASE_STRATEGY" = 'move' ]; then
       if [ $CHANGELOG_GIT_STAGE_RELEASE = true ]; then
-        git mv 'changelog/unreleased' "changelog/$expanded"
+        git mv "$CHANGELOG_FOLDER/unreleased" "$CHANGELOG_FOLDER/$expanded"
       else
-        mv 'changelog/unreleased' "changelog/$expanded"
+        mv "$CHANGELOG_FOLDER/unreleased" "$CHANGELOG_FOLDER/$expanded"
       fi
   elif [ "$CHANGELOG_RELEASE_STRATEGY" = 'delete' ]; then
     if [ $CHANGELOG_GIT_STAGE_RELEASE = true ]; then
-      git rm -r changelog/unreleased
+      git rm -r "$CHANGELOG_FOLDER/unreleased"
     else
-      rm -r changelog/unreleased
+      rm -r "$CHANGELOG_FOLDER/unreleased"
     fi
   else
       >&2 echo "ERORR: \$CHANGELOG_RELEASE_STRATEGY has to be either 'move' or 'delete'. Keeping unreleased changes.";

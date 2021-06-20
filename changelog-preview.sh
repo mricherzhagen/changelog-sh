@@ -42,7 +42,7 @@ function _changelogsh_preview_unreleased {
     echo "## [$raw_version]"
   fi
 
-  for dir in changelog/unreleased/*; do
+  for dir in "$CHANGELOG_FOLDER/unreleased/"*; do
     if [ "$(ls -A $dir)" ]; then
       current=$(echo $dir | grep -o '[^/]*$')
       echo "###" $(_changelogsh_title $current)

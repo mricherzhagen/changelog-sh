@@ -5,12 +5,12 @@ function _changelogsh_new {
   timestamp=$(date +"%Y%m%d%H%M%S")
   type='fixed'
 
-  if [ ! -d 'changelog' ]; then
-    mkdir 'changelog'
+  if [ ! -d "$CHANGELOG_FOLDER" ]; then
+    mkdir "$CHANGELOG_FOLDER"
   fi
 
-  if [ ! -d 'changelog/unreleased' ]; then
-    mkdir 'changelog/unreleased'
+  if [ ! -d "$CHANGELOG_FOLDER/unreleased" ]; then
+    mkdir "$CHANGELOG_FOLDER/unreleased"
   fi
 
   if [ "$#" -ge 1 ]; then
@@ -22,14 +22,14 @@ function _changelogsh_new {
     type=`echo "$1" | tr '[:upper:]' '[:lower:]'`
   fi
 
-  if [ ! -d "changelog/unreleased/$type" ]; then
-    mkdir "changelog/unreleased/$type"
+  if [ ! -d "$CHANGELOG_FOLDER/unreleased/$type" ]; then
+    mkdir "$CHANGELOG_FOLDER/unreleased/$type"
   fi
 
   if [ "$#" -ge 2 ]; then
-    echo ${@:2} > "changelog/unreleased/$type/$timestamp"
+    echo ${@:2} > "$CHANGELOG_FOLDER/unreleased/$type/$timestamp"
     if [ $CHANGELOG_GIT_STAGE_CHANGE = true ]; then
-        git add "changelog/unreleased/$type/$timestamp"
+        git add "$CHANGELOG_FOLDER/unreleased/$type/$timestamp"
     fi
   fi
 

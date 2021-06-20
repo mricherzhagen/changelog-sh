@@ -1,35 +1,35 @@
 #!/bin/bash
 
 function _changelogsh_init {
-  if [ ! -d 'changelog' ]; then
-    mkdir 'changelog'
+  if [ ! -d "$CHANGELOG_FOLDER" ]; then
+    mkdir "$CHANGELOG_FOLDER"
   fi
 
-  if [ ! -d 'changelog/unreleased' ]; then
-    mkdir 'changelog/unreleased'
+  if [ ! -d "$CHANGELOG_FOLDER/unreleased" ]; then
+    mkdir "$CHANGELOG_FOLDER/unreleased"
   fi
 
-  if [ ! -d 'changelog/unreleased/added' ]; then
-    mkdir 'changelog/unreleased/added'
+  if [ ! -d "$CHANGELOG_FOLDER/unreleased/added" ]; then
+    mkdir "$CHANGELOG_FOLDER/unreleased/added"
   fi
 
-  if [ ! -d 'changelog/unreleased/changed' ]; then
-    mkdir 'changelog/unreleased/changed'
+  if [ ! -d "$CHANGELOG_FOLDER/unreleased/changed" ]; then
+    mkdir "$CHANGELOG_FOLDER/unreleased/changed"
   fi
 
-  if [ ! -d 'changelog/unreleased/deprecated' ]; then
-    mkdir 'changelog/unreleased/deprecated'
+  if [ ! -d "$CHANGELOG_FOLDER/unreleased/deprecated" ]; then
+    mkdir "$CHANGELOG_FOLDER/unreleased/deprecated"
   fi
 
-  if [ ! -d 'changelog/unreleased/fixed' ]; then
-    mkdir 'changelog/unreleased/fixed'
+  if [ ! -d "$CHANGELOG_FOLDER/unreleased/fixed" ]; then
+    mkdir "$CHANGELOG_FOLDER/unreleased/fixed"
   fi
 
-  if [ ! -d 'changelog/unreleased/removed' ]; then
-    mkdir 'changelog/unreleased/removed'
+  if [ ! -d "$CHANGELOG_FOLDER/unreleased/removed" ]; then
+    mkdir "$CHANGELOG_FOLDER/unreleased/removed"
   fi
 
-  if [ ! -d 'changelog/unreleased/security' ]; then
-    mkdir 'changelog/unreleased/security'
+  if [ ! -d "$CHANGELOG_FOLDER/unreleased/security" ]; then
+    mkdir "$CHANGELOG_FOLDER/unreleased/security"
   fi
 }
