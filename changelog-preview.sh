@@ -4,6 +4,7 @@ function _changelogsh_preview {
     
   if [ "$#" -gt 0 ]; then
     _changelogsh_force_semver $1
+    _changelogsh_check_new_version_gt $1
   fi
 
   CHANGELOG_TEMPFILE=""

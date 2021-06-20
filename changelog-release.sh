@@ -14,6 +14,8 @@ function _changelogsh_release {
 
   version=$1
   _changelogsh_force_semver $version
+  _changelogsh_check_new_version_gt $version
+  local version_was_problematic=$?
   
   if grep -Fq "## [$version]" $CHANGELOG_FILENAME; then
     >&2 echo "Error: Version $version already exists in $CHANGELOG_FILENAME";
@@ -63,26 +65,40 @@ function _changelogsh_release {
       exit 1;
   fi
   if [ $CHANGELOG_INSIDE_GIT = true -a $CHANGELOG_RELEASE_COMMIT = true -a $CHANGELOG_GIT_STAGE_RELEASE = true ]; then
-    if git commit -m "`echo "$CHANGELOG_RELEASE_COMMIT_MESSAGE" | sed "s/#VERSION#/$version/"`"; then
-      echo "Created version commit"
-    else
-      >&2 echo "ERROR: An error occured creating the release commit. Check your release manually!"
-      exit 1
-    fi
-    if [ $CHANGELOG_RELEASE_TAG = true ]; then
-      TAGNAME="`echo "$CHANGELOG_RELEASE_TAG_NAME" | sed "s/#VERSION#/$version/"`"
-      if git tag "$TAGNAME"; then
-        echo "Created tag $TAGNAME"
+    if [ $version_was_problematic -eq 0 ]; then
+      if git commit -m "`echo "$CHANGELOG_RELEASE_COMMIT_MESSAGE" | sed "s/#VERSION#/$version/"`"; then
+        echo "Created version commit"
       else
-        >&2 echo "ERROR: An error occured creating the tag $TAGNAME. Check your release manually!"
-        exit 1;
+        >&2 echo "ERROR: An error occured creating the release commit. Check your release manually!"
+        exit 1
       fi
+      if [ $CHANGELOG_RELEASE_TAG = true ]; then
+        TAGNAME="`echo "$CHANGELOG_RELEASE_TAG_NAME" | sed "s/#VERSION#/$version/"`"
+        if git tag "$TAGNAME"; then
+          echo "Created tag $TAGNAME"
+        else
+          >&2 echo "ERROR: An error occured creating the tag $TAGNAME. Check your release manually!"
+          exit 1;
+        fi
+      fi
+      echo "Please review changes before pushing with:"
+    else
+      echo "Because your version number $version was lower than the latest version the changes were not committed automatically."
+      echo "Maybe you need to move the created version to a different spot in the CHANGELOG.md?"
+      echo "Verify the changes and then confirm them with:"
+      echo ""
+      echo "    git commit -m '`echo "$CHANGELOG_RELEASE_COMMIT_MESSAGE" | sed "s/#VERSION#/$version/"`"
+      if [ $CHANGELOG_RELEASE_TAG = true ]; then
+        TAGNAME="`echo "$CHANGELOG_RELEASE_TAG_NAME" | sed "s/#VERSION#/$version/"`"
+        echo "    git tag '$TAGNAME'"
+      fi
+      echo ""
+      echo "then continue with:"
     fi
-    
+
     # Code for getting remote name from https://stackoverflow.com/a/9753364/2256700
     REMOTE_NAME=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} | sed 's@/.*$@@')
     
-    echo "Please review changes before pushing with"
     echo ""
     echo "    git push $REMOTE_NAME"
     if [ $CHANGELOG_RELEASE_TAG = true ]; then
