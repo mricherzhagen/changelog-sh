@@ -21,7 +21,7 @@ function _changelogsh_release {
   fi
   
   if [ $CHANGELOG_INSIDE_GIT = true -a $CHANGELOG_RELEASE_COMMIT = true ]; then
-    if [ ! $CHANGELOG_GIT_STAGE_RELEASE = true]; then
+    if [ ! $CHANGELOG_GIT_STAGE_RELEASE = true ]; then
       >&2 echo "ERROR: If CHANGELOG_RELEASE_COMMIT is true you also need to enable the CHANGELOG_GIT_STAGE_RELEASE option."
       exit 1;
     fi
