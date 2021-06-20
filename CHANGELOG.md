@@ -1,5 +1,9 @@
 # What's new?
 
+## [2.5.2] - 2021-06-20
+### Added
+- `change upgrade` now displays the `CHANGELOG.md` differences for the upgrade.
+
 ## [2.5.1] - 2021-06-20
 ### Changed
 - `change release` now prints both required push commands
