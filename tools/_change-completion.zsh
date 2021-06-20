@@ -7,11 +7,11 @@ _change_completion() {
   if [ ! -n "$CHANGE" ]; then
     CHANGE=~/.change
   fi
-  CHANGELOG_ALLOWED_CHANGETYPES=$( source $CHANGE/changelog-read-conf.sh; echo $CHANGELOG_ALLOWED_CHANGETYPES )
+  CHANGELOGSH_ALLOWED_CHANGETYPES=$( source $CHANGE/changelog-read-conf.sh; echo $CHANGELOGSH_ALLOWED_CHANGETYPES )
   # Load custom completion commands
   case "${words[2]}" in
     'new')
-      _values 'changetype' `echo $CHANGELOG_ALLOWED_CHANGETYPES`
+      _values 'changetype' `echo $CHANGELOGSH_ALLOWED_CHANGETYPES`
     ;;
     release|preview|full-preview)
       _values 'version' 'bump-major' 'bump-minor' 'bump-patch'
@@ -25,7 +25,7 @@ _change_completion() {
       'full-preview:Preview the full changelog including unreleased changes in Markdown format'\
       'release:Release the changes for the current version'\
     )
-    subcmds+=(`echo $CHANGELOG_ALLOWED_CHANGETYPES`)
+    subcmds+=(`echo $CHANGELOGSH_ALLOWED_CHANGETYPES`)
     _describe 'command' subcmds
   esac
   return

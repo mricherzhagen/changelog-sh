@@ -1,42 +1,42 @@
-CHANGELOG_FILENAME='CHANGELOG.md'
-CHANGELOG_FOLDER='changelog'
-CHANGELOG_HEADER="# What's new?
+CHANGELOGSH_FILENAME='CHANGELOG.md'
+CHANGELOGSH_FOLDER='changelog'
+CHANGELOGSH_HEADER="# What's new?
 "
-CHANGELOG_INCLUDE_TIMESTAMP=true
+CHANGELOGSH_INCLUDE_TIMESTAMP=true
 
-# CHANGELOG_RELEASE_STRATEGY controls what happens with the unreleased changefiles when an release is created.
+# CHANGELOGSH_RELEASE_STRATEGY controls what happens with the unreleased changefiles when an release is created.
 # Can be either 'move' or 'delete'.
-CHANGELOG_RELEASE_STRATEGY='delete'
+CHANGELOGSH_RELEASE_STRATEGY='delete'
 
-# Make the release command create a commit with the changelog changes. Requires CHANGELOG_GIT_STAGE_RELEASE to be enabled as well.
-CHANGELOG_RELEASE_COMMIT=true
-CHANGELOG_RELEASE_COMMIT_MESSAGE="Version #VERSION#"
+# Make the release command create a commit with the changelog changes. Requires CHANGELOGSH_GIT_STAGE_RELEASE to be enabled as well.
+CHANGELOGSH_RELEASE_COMMIT=true
+CHANGELOGSH_RELEASE_COMMIT_MESSAGE="Version #VERSION#"
 
-# Make the release command also create a tag on the newly created commit. Requires CHANGELOG_RELEASE_COMMIT to be enabled as well.
-CHANGELOG_RELEASE_TAG=true
-CHANGELOG_RELEASE_TAG_NAME='v#VERSION#'
+# Make the release command also create a tag on the newly created commit. Requires CHANGELOGSH_RELEASE_COMMIT to be enabled as well.
+CHANGELOGSH_RELEASE_TAG=true
+CHANGELOGSH_RELEASE_TAG_NAME='v#VERSION#'
 
-CHANGELOG_GIT_STAGE_RELEASE=true
-CHANGELOG_GIT_STAGE_CHANGE=true
+CHANGELOGSH_GIT_STAGE_RELEASE=true
+CHANGELOGSH_GIT_STAGE_CHANGE=true
 
 # Specify all allowed change types: Make sure to not include any empty lines.
-CHANGELOG_ALLOWED_CHANGETYPES="Added
+CHANGELOGSH_ALLOWED_CHANGETYPES="Added
 Changed
 Deprecated
 Removed
 Fixed
 Security"
 
-CHANGELOG_FORCE_SEMVER=true
+CHANGELOGSH_FORCE_SEMVER=true
 # Set to true to make sure that new versions are greater than the latest version in CHANGELOG.md. Requires semantic versioning.
 # Will ask to continue if version number is equal or lower to latest version
-CHANGELOG_CHECK_VERSION_GT=true;
-# Will reject version numbers that are smaller or equal to the latest version. Requires CHANGELOG_CHECK_VERSION_GT to be enabled as well.
-CHANGELOG_FORCE_VERSION_GT=false;
+CHANGELOGSH_CHECK_VERSION_GT=true;
+# Will reject version numbers that are smaller or equal to the latest version. Requires CHANGELOGSH_CHECK_VERSION_GT to be enabled as well.
+CHANGELOGSH_FORCE_VERSION_GT=false;
 
 # Check that the specified version is an increment of the latest version and no version was skipped
-CHANGELOG_CHECK_BUMP_INCREMENTAL=true
+CHANGELOGSH_CHECK_BUMP_INCREMENTAL=true
 
 #INTERNAL
-CHANGELOG_MKTEMP_OPTIONS="--tmpdir changelog-sh-tmp.XXXXXXXX"
-CHANGELOG_DIFF_OPTIONS="--color=always -u"
+CHANGELOGSH_MKTEMP_OPTIONS="--tmpdir changelog-sh-tmp.XXXXXXXX"
+CHANGELOGSH_DIFF_OPTIONS="--color=always -u"

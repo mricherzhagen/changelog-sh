@@ -13,7 +13,7 @@ function _changelogsh_upgrade {
   # Get latest tag name
   latestTag=$(git describe --tags --match "v[0-9]*" --abbrev=0 HEAD)
   
-  git diff $CHANGELOG_DIFF_OPTIONS $latestTag CHANGELOG.md
+  git diff $CHANGELOGSH_DIFF_OPTIONS $latestTag CHANGELOG.md
 
   # Checkout latest tag
   # Code from https://stackoverflow.com/a/45652159/2256700

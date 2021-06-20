@@ -24,8 +24,8 @@ function _changelogsh_is_semver {
 }
 
 function _changelogsh_force_semver {
-  if [ $CHANGELOG_FORCE_SEMVER = true ] && ! _changelogsh_is_semver $1; then
-    >&2 echo "ERROR: $1 is not a semantic version number and CHANGELOG_FORCE_SEMVER is enabled."
+  if [ $CHANGELOGSH_FORCE_SEMVER = true ] && ! _changelogsh_is_semver $1; then
+    >&2 echo "ERROR: $1 is not a semantic version number and CHANGELOGSH_FORCE_SEMVER is enabled."
     exit 1;
   fi
 }
@@ -40,12 +40,12 @@ function _changelogsh_get_latest_version {
 }
 
 function _changelogsh_check_new_version_gt {
-  if [ $CHANGELOG_CHECK_VERSION_GT = true ]; then
+  if [ $CHANGELOGSH_CHECK_VERSION_GT = true ]; then
       local latestVersion
       # Code from https://unix.stackexchange.com/a/278377/50708
       latestVersion="`_changelogsh_get_latest_version`"
       if [ "$latestVersion" != "" ] && ! _changelogsh_compare_semver_gt "$1" "$latestVersion"; then
-          if [ $CHANGELOG_FORCE_VERSION_GT = true ]; then
+          if [ $CHANGELOGSH_FORCE_VERSION_GT = true ]; then
               >&2 echo "ERROR: $1 is not larger than the latest version $latestVersion."
               exit 1
           else
@@ -53,7 +53,7 @@ function _changelogsh_check_new_version_gt {
               if ! [ "$REPLY" = "y" -o "$REPLY" = "yes" ]; then
                   exit 1;
               fi
-              export CHANGELOG_CHECK_VERSION_GT=false
+              export CHANGELOGSH_CHECK_VERSION_GT=false
               return 1
           fi
       fi

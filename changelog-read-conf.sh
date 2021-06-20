@@ -2,19 +2,19 @@
 
 function _execute_conf_file {
   source $1
-  export CHANGELOG_HEADER
+  export CHANGELOGSH_HEADER
 }
 
 #Always read default config from $CHANGE
 _execute_conf_file $CHANGE/.changelog-sh-conf.sh
 if TOPLEVEL_GIT="`git rev-parse --show-toplevel >/dev/null 2>&1`" ; then
-  CHANGELOG_INSIDE_GIT=true
+  CHANGELOGSH_INSIDE_GIT=true
   if [ -f $TOPLEVEL_GIT/.changelog-sh-conf ]; then
-    export CHANGELOG_CONF_FILE=$TOPLEVEL_GIT/.changelog-sh-conf.sh
+    export CHANGELOGSH_CONF_FILE=$TOPLEVEL_GIT/.changelog-sh-conf.sh
     
     #Overwrite defaults with per project settings
-    _execute_conf_file $CHANGELOG_CONF_FILE
+    _execute_conf_file $CHANGELOGSH_CONF_FILE
   fi
 else
-  CHANGELOG_INSIDE_GIT=false
+  CHANGELOGSH_INSIDE_GIT=false
 fi

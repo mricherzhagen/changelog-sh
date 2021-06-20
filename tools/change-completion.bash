@@ -23,15 +23,15 @@ _change_completions() {
     CHANGE=~/.change
   fi
   if [ "$COMP_CWORD" = "1"  ]; then
-    CHANGELOG_ALLOWED_CHANGETYPES=$( source $CHANGE/changelog-read-conf.sh; echo $CHANGELOG_ALLOWED_CHANGETYPES | tr '[:upper:]' '[:lower:]'; )
+    CHANGELOGSH_ALLOWED_CHANGETYPES=$( source $CHANGE/changelog-read-conf.sh; echo $CHANGELOGSH_ALLOWED_CHANGETYPES | tr '[:upper:]' '[:lower:]'; )
     commands="init new preview full-preview release"
-    TYPE_SUGGESTIONS="`_change_completions_match_case_suggestion_helper "${COMP_WORDS[1]}" "$CHANGELOG_ALLOWED_CHANGETYPES"`"
+    TYPE_SUGGESTIONS="`_change_completions_match_case_suggestion_helper "${COMP_WORDS[1]}" "$CHANGELOGSH_ALLOWED_CHANGETYPES"`"
     COMPREPLY=($(compgen -W "$commands $TYPE_SUGGESTIONS" -- "${COMP_WORDS[1]}"))
   elif [ "$COMP_CWORD" = "2" ]; then
     case "${COMP_WORDS[1]}" in
       "new")
-        CHANGELOG_ALLOWED_CHANGETYPES=$( source $CHANGE/changelog-read-conf.sh; echo $CHANGELOG_ALLOWED_CHANGETYPES | tr '[:upper:]' '[:lower:]'; )
-        TYPE_SUGGESTIONS="`_change_completions_match_case_suggestion_helper "${COMP_WORDS[2]}" "$CHANGELOG_ALLOWED_CHANGETYPES"`"
+        CHANGELOGSH_ALLOWED_CHANGETYPES=$( source $CHANGE/changelog-read-conf.sh; echo $CHANGELOGSH_ALLOWED_CHANGETYPES | tr '[:upper:]' '[:lower:]'; )
+        TYPE_SUGGESTIONS="`_change_completions_match_case_suggestion_helper "${COMP_WORDS[2]}" "$CHANGELOGSH_ALLOWED_CHANGETYPES"`"
         COMPREPLY=($(compgen -W "$TYPE_SUGGESTIONS" -- "${COMP_WORDS[2]}"))
       ;;
       release|preview|full-preview)

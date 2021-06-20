@@ -61,7 +61,7 @@ function _changelogsh_main {
     return
   fi
   
-  if [ ! -z "$CHANGELOG_ALLOWED_CHANGETYPES" ] && echo "$1" | grep -Fqi "$CHANGELOG_ALLOWED_CHANGETYPES"; then
+  if [ ! -z "$CHANGELOGSH_ALLOWED_CHANGETYPES" ] && echo "$1" | grep -Fqi "$CHANGELOGSH_ALLOWED_CHANGETYPES"; then
       _changelogsh_new ${@:1}
       return
   fi
