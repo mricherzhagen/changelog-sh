@@ -1,1 +1,0 @@
-`CHANGELOG_FOLDER` option to configure where to store the changes. Defaults to the old `changelog` name, but will change in future versions.

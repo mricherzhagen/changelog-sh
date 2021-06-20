@@ -1,5 +1,12 @@
 # What's new?
 
+## [2.6.0] - 2021-06-20
+### Added
+- `CHANGELOG_FOLDER` option to configure where to store the changes. Defaults to the old `changelog` name, but will change in future versions.
+- `CHANGELOG_FORCE_SEMVER` option to verify that versions match semantic versioning. Defaults to `true`.
+- `CHANGELOG_CHECK_VERSION_GT` option to check if version is greater than the latest version from `CHANGELOG.md`. Will ask for confirmation if not. Defaults to `true`.
+- `CHANGELOG_FORCE_VERSION_GT` option to abort if specified version is lower than latest version. Defaults to `false`.
+
 ## [2.5.2] - 2021-06-20
 ### Added
 - `change upgrade` now displays the `CHANGELOG.md` differences for the upgrade.

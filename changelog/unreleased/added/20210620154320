@@ -1,1 +1,0 @@
-`CHANGELOG_FORCE_VERSION_GT` option to abort if specified version is lower than latest version. Defaults to `false`.
