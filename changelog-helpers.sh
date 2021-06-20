@@ -30,13 +30,20 @@ function _changelogsh_force_semver {
   fi
 }
 
-
+function _changelogsh_get_latest_version {
+  echo "`sed -n -E 's/^## \[(.+)\].*$/\1/p' CHANGELOG.md | head -n1`"
+  return
+  if [ -z "${CHANGELOGSH_LATEST_VERSION_CACHE+x}" ]; then
+    CHANGELOGSH_LATEST_VERSION_CACHE="`sed -n -E 's/^## \[(.+)\].*$/\1/p' CHANGELOG.md | head -n1`"
+  fi
+  echo "$CHANGELOGSH_LATEST_VERSION_CACHE"
+}
 
 function _changelogsh_check_new_version_gt {
   if [ $CHANGELOG_CHECK_VERSION_GT = true ]; then
       local latestVersion
       # Code from https://unix.stackexchange.com/a/278377/50708
-      latestVersion="`sed -n -E 's/^## \[(.+)\].*$/\1/p' CHANGELOG.md | head -n1`"
+      latestVersion="`_changelogsh_get_latest_version`"
       if [ "$latestVersion" != "" ] && ! _changelogsh_compare_semver_gt "$1" "$latestVersion"; then
           if [ $CHANGELOG_FORCE_VERSION_GT = true ]; then
               >&2 echo "ERROR: $1 is not larger than the latest version $latestVersion."
@@ -116,4 +123,51 @@ function _changelogsh_compare_versions() {
 
     # All elements are equal, thus v1 == v2
     return 0
+}
+
+function _changelogsh_split_semver {
+  echo "$1" | sed -E 's/^([0-9]+)\.([0-9]+)\.([0-9]+)(-.+)?$/\1 \2 \3 \4/'
+}
+
+function _changelogsh_get_next_version {
+  local version_split=(`_changelogsh_split_semver "$1"`)
+  case "$2" in
+    'major')
+      echo "`expr "${version_split[0]}" + 1`.0.0"
+      ;;
+    'minor')
+      echo "${version_split[0]}.`expr "${version_split[1]}" + 1`.0"
+      ;;
+    'patch')
+      echo "${version_split[0]}.${version_split[1]}.`expr "${version_split[2]}" + 1`"
+      ;;
+  esac
+}
+
+function _changelogsh_parse_version_arg {
+  if [[ "$1" =~ ^bump- ]]; then
+    local latestVersion="`_changelogsh_get_latest_version`"
+  fi
+  case "$1" in
+    bump-major)
+      echo "`_changelogsh_get_next_version "$latestVersion" "major"`"
+      ;;
+    bump-major-*)
+      echo "`_changelogsh_get_next_version "$latestVersion" "major"`-${1#bump-major-}"
+      ;;
+    bump-minor)
+      echo "`_changelogsh_get_next_version "$latestVersion" "minor"`"
+      ;;
+    bump-minor-*)
+      echo "`_changelogsh_get_next_version "$latestVersion" "minor"`-${1#bump-minor-}"
+      ;;
+    bump-patch)
+      echo "`_changelogsh_get_next_version "$latestVersion" "patch"`"
+      ;;
+    bump-patch-*)
+      echo "`_changelogsh_get_next_version "$latestVersion" "patch"`-${1#bump-patch-}"
+      ;;
+    *)
+      echo "$1"
+    esac
 }

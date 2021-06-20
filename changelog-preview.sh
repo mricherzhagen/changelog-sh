@@ -3,8 +3,9 @@
 function _changelogsh_preview {
     
   if [ "$#" -gt 0 ]; then
-    _changelogsh_force_semver $1
-    _changelogsh_check_new_version_gt $1
+    version="`_changelogsh_parse_version_arg $1`"
+    _changelogsh_force_semver "$version"
+    _changelogsh_check_new_version_gt "$version"
   fi
 
   CHANGELOG_TEMPFILE=""
@@ -28,7 +29,7 @@ function _changelogsh_preview {
   fi
   
   echo "$CHANGELOG_HEADER"
-  _changelogsh_preview_unreleased ${@:1}
+  _changelogsh_preview_unreleased "$version"
   
   if [ ! -z "$CHANGELOG_TEMPFILE" -a -s "$CHANGELOG_TEMPFILE" ]; then
     cat $CHANGELOG_TEMPFILE
@@ -39,8 +40,8 @@ function _changelogsh_preview {
 function _changelogsh_preview_unreleased {
   raw_version="Unreleased"
   if [ "$#" -gt 0 ]; then
-    _changelogsh_force_semver $1
-    raw_version=$1
+    raw_version="`_changelogsh_parse_version_arg $1`"
+    _changelogsh_force_semver "$raw_version"
   fi
 
   if [ $CHANGELOG_INCLUDE_TIMESTAMP = true ]; then
