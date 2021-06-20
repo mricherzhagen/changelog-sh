@@ -77,12 +77,14 @@ function _changelogsh_release {
         exit 1;
       fi
     fi
-    echo "Please review changes before pushing"
+    
+    # Code for getting remote name from https://stackoverflow.com/a/9753364/2256700
+    REMOTE_NAME=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} | sed 's@/.*$@@')
+    
+    echo "Please review changes before pushing with"
+    echo ""
+    echo "    git push $REMOTE_NAME"
     if [ $CHANGELOG_RELEASE_TAG = true ]; then
-      # Code for getting remote name from https://stackoverflow.com/a/9753364/2256700
-      REMOTE_NAME=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} | sed 's@/.*$@@')
-      echo "Remember to also push the release tag with"
-      echo ""
       echo "    git push $REMOTE_NAME $TAGNAME"
     fi
   fi
