@@ -1,1 +1,0 @@
-`CHANGELOG_CHECK_BUMP_INCREMENTAL` option to check that no version is skipped. Defaults to `true`.

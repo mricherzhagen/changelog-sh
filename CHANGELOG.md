@@ -1,5 +1,12 @@
 # What's new?
 
+## [2.7.0] - 2021-06-20
+### Added
+- Specify `bump-major`, `bump-minor` or `bump-patch` as a version argument and the respective number will be increased.
+- Use `bump-major-something` as the version argument to append `-something` to the generated version.
+- `CHANGELOG_CHECK_BUMP_INCREMENTAL` option to check that no version is skipped. Defaults to `true`.
+- Autocomplete `bump-(major|minor|patch)` for version arguments
+
 ## [2.6.0] - 2021-06-20
 ### Added
 - `CHANGELOG_FOLDER` option to configure where to store the changes. Defaults to the old `changelog` name, but will change in future versions.
