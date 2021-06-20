@@ -62,7 +62,7 @@ function _changelogsh_release {
       exit 1;
   fi
   if [ $CHANGELOG_INSIDE_GIT = true -a $CHANGELOG_RELEASE_COMMIT = true -a $CHANGELOG_GIT_STAGE_RELEASE = true ]; then
-    if git commit -m "Version $version"; then
+    if git commit -m "`echo "$CHANGELOG_RELEASE_COMMIT_MESSAGE" | sed "s/#VERSION#/$version/"`"; then
       echo "Created version commit"
     else
       >&2 echo "ERROR: An error occured creating the release commit. Check your release manually!"

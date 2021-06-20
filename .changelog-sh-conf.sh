@@ -9,6 +9,7 @@ CHANGELOG_RELEASE_STRATEGY='delete'
 
 # Make the release command create a commit with the changelog changes. Requires CHANGELOG_GIT_STAGE_RELEASE to be enabled as well.
 CHANGELOG_RELEASE_COMMIT=true
+CHANGELOG_RELEASE_COMMIT_MESSAGE="Version #VERSION#"
 
 # Make the release command also create a tag on the newly created commit. Requires CHANGELOG_RELEASE_COMMIT to be enabled as well.
 CHANGELOG_RELEASE_TAG=true
