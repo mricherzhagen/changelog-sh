@@ -1,5 +1,9 @@
 # What's new?
 
+## [3.0.1] - 2021-06-20
+### Fixed
+- Missing `_changelogsh_` prefix for `execute_conf_file` function
+
 ## [3.0.0] - 2021-06-20
 ### Changed
 - Change default folder for storing changes from `changelog` to `.changelog`. Make sure to migrate your changes to the new folder.
