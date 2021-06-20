@@ -1,0 +1,1 @@
+`install.sh` script now also prints .rc contents for adding `change` to the `$PATH`.

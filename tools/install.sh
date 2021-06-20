@@ -23,4 +23,11 @@ latestTag=$(git describe --tags --match "v[0-9]*" --abbrev=0 HEAD)
 git -c advice.detachedHead=false checkout $latestTag
 
 echo ""
-echo "or add $CHANGE/bin to your \$PATH variable"
+echo "To complete installation add $CHANGE/bin to your \$PATH variable:"
+echo ""
+echo "    PATH=$CHANGE/bin:\$PATH"
+echo ""
+echo "or add an alias to your .bashrc file:"
+echo ""
+echo "    alias change='sh $CHANGE/changelog.sh'"
+echo ""
