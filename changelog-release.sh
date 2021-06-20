@@ -68,6 +68,22 @@ function _changelogsh_release {
       >&2 echo "ERROR: An error occured creating the release commit. Check your release manually!"
       exit 1
     fi
+    if [ $CHANGELOG_RELEASE_TAG = true ]; then
+      TAGNAME="v$version"
+      if git tag "$TAGNAME"; then
+        echo "Created tag $TAGNAME"
+      else
+        >&2 echo "ERROR: An error occured creating the tag $TAGNAME. Check your release manually!"
+        exit 1;
+      fi
+    fi
     echo "Please review changes before pushing"
+    if [ $CHANGELOG_RELEASE_TAG = true ]; then
+      # Code for getting remote name from https://stackoverflow.com/a/9753364/2256700
+      REMOTE_NAME=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} | sed 's@/.*$@@')
+      echo "Remember to also push the release tag with"
+      echo ""
+      echo "    git push $REMOTE_NAME $TAGNAME"
+    fi
   fi
 }
