@@ -1,5 +1,13 @@
 # What's new?
 
+## [2.4.0] - 2021-06-20
+### Added
+- `CHANGELOG_RELEASE_COMMIT` option to automatically create a release-commit with the changelog changes.
+- `CHANGELOG_RELEASE_TAG` option to also automatically tag the release commit.
+- `CHANGELOG_RELEASE_COMMIT_MESSAGE` option to configure release commit message
+- `CHANGELOG_RELEASE_TAG_NAME` option to set release tag name
+- Warning in `README.md` about security implications of `.changelog-sh-conf.sh` file.
+
 ## [2.3.0] - 2021-06-19
 ### Added
 - Bash-Completion script for the `change` command.
