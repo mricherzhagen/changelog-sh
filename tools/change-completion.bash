@@ -27,10 +27,17 @@ _change_completions() {
     commands="init new preview full-preview release"
     TYPE_SUGGESTIONS="`_change_completions_match_case_suggestion_helper "${COMP_WORDS[1]}" "$CHANGELOG_ALLOWED_CHANGETYPES"`"
     COMPREPLY=($(compgen -W "$commands $TYPE_SUGGESTIONS" -- "${COMP_WORDS[1]}"))
-  elif [ "$COMP_CWORD" = "2" -a "${COMP_WORDS[1]}" = "new" ]; then
-    CHANGELOG_ALLOWED_CHANGETYPES=$( source $CHANGE/changelog-read-conf.sh; echo $CHANGELOG_ALLOWED_CHANGETYPES | tr '[:upper:]' '[:lower:]'; )
-    TYPE_SUGGESTIONS="`_change_completions_match_case_suggestion_helper "${COMP_WORDS[2]}" "$CHANGELOG_ALLOWED_CHANGETYPES"`"
-    COMPREPLY=($(compgen -W "$TYPE_SUGGESTIONS" -- "${COMP_WORDS[2]}"))
+  elif [ "$COMP_CWORD" = "2" ]; then
+    case "${COMP_WORDS[1]}" in
+      "new")
+        CHANGELOG_ALLOWED_CHANGETYPES=$( source $CHANGE/changelog-read-conf.sh; echo $CHANGELOG_ALLOWED_CHANGETYPES | tr '[:upper:]' '[:lower:]'; )
+        TYPE_SUGGESTIONS="`_change_completions_match_case_suggestion_helper "${COMP_WORDS[2]}" "$CHANGELOG_ALLOWED_CHANGETYPES"`"
+        COMPREPLY=($(compgen -W "$TYPE_SUGGESTIONS" -- "${COMP_WORDS[2]}"))
+      ;;
+      release|preview|full-preview)
+        COMPREPLY=($(compgen -W "bump-major bump-minor bump-patch" -- "${COMP_WORDS[2]}"))
+      ;;
+    esac
   fi
 
 }

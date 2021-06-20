@@ -9,9 +9,14 @@ _change_completion() {
   fi
   CHANGELOG_ALLOWED_CHANGETYPES=$( source $CHANGE/changelog-read-conf.sh; echo $CHANGELOG_ALLOWED_CHANGETYPES )
   # Load custom completion commands
-  if [ "${words[2]}" = 'new' ]; then
-    _values 'changetype' `echo $CHANGELOG_ALLOWED_CHANGETYPES`
-  else
+  case "${words[2]}" in
+    'new')
+      _values 'changetype' `echo $CHANGELOG_ALLOWED_CHANGETYPES`
+    ;;
+    release|preview|full-preview)
+      _values 'version' 'bump-major' 'bump-minor' 'bump-patch'
+    ;;
+    *)
     local -a subcmds
     subcmds=(\
       'init:Initialize changelog in current directory'\
@@ -22,7 +27,7 @@ _change_completion() {
     )
     subcmds+=(`echo $CHANGELOG_ALLOWED_CHANGETYPES`)
     _describe 'command' subcmds
-  fi
+  esac
   return
 }
 
