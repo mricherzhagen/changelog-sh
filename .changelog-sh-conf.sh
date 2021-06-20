@@ -27,6 +27,8 @@ Removed
 Fixed
 Security"
 
+CHANGELOG_FORCE_SEMVER=true
+
 #INTERNAL
 CHANGELOG_MKTEMP_OPTIONS="--tmpdir changelog-sh-tmp.XXXXXXXX"
 CHANGELOG_DIFF_OPTIONS="--color=always -u"

@@ -13,7 +13,7 @@ function _changelogsh_release {
   fi
 
   version=$1
-  expanded=$(_changelogsh_raw_to_expanded $version)
+  _changelogsh_force_semver $version
   
   if grep -Fq "## [$version]" $CHANGELOG_FILENAME; then
     >&2 echo "Error: Version $version already exists in $CHANGELOG_FILENAME";
@@ -46,6 +46,7 @@ function _changelogsh_release {
     exit 1
   fi
   if [ "$CHANGELOG_RELEASE_STRATEGY" = 'move' ]; then
+      expanded=$(_changelogsh_raw_to_expanded $version)
       if [ $CHANGELOG_GIT_STAGE_RELEASE = true ]; then
         git mv "$CHANGELOG_FOLDER/unreleased" "$CHANGELOG_FOLDER/$expanded"
       else

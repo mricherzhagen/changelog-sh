@@ -1,6 +1,11 @@
 #!/bin/bash
 
 function _changelogsh_preview {
+    
+  if [ "$#" -gt 0 ]; then
+    _changelogsh_force_semver $1
+  fi
+
   CHANGELOG_TEMPFILE=""
   if [ -s "$CHANGELOG_FILENAME" ]; then
     HEADER_TEMPFILE=`mktemp $CHANGELOG_MKTEMP_OPTIONS`
@@ -33,6 +38,7 @@ function _changelogsh_preview {
 function _changelogsh_preview_unreleased {
   raw_version="Unreleased"
   if [ "$#" -gt 0 ]; then
+    _changelogsh_force_semver $1
     raw_version=$1
   fi
 

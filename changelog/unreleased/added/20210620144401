@@ -1,0 +1,1 @@
+`CHANGELOG_FORCE_SEMVER` option to verify that versions match semantic versioning. Defaults to `true`.
