@@ -1,5 +1,11 @@
 # What's new?
 
+## [2.5.0] - 2021-06-20
+### Changed
+- `install.sh` script now installs latest version tag instead of `msater` branch
+- `change upgrade` now upgrades to the latest version tag
+- `install.sh` script now also prints .rc contents for adding `change` to the `$PATH`.
+
 ## [2.4.0] - 2021-06-20
 ### Added
 - `CHANGELOG_RELEASE_COMMIT` option to automatically create a release-commit with the changelog changes.
