@@ -1,5 +1,12 @@
 # What's new?
 
+## [2.5.1] - 2021-06-20
+### Changed
+- `change release` now prints both required push commands
+
+### Fixed
+- Syntax error when there were staged changes and `change release` was called
+
 ## [2.5.0] - 2021-06-20
 ### Changed
 - `install.sh` script now installs latest version tag instead of `msater` branch
