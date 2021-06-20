@@ -6,6 +6,10 @@ CHANGELOG_INCLUDE_TIMESTAMP=true
 # CHANGELOG_RELEASE_STRATEGY controls what happens with the unreleased changefiles when an release is created.
 # Can be either 'move' or 'delete'.
 CHANGELOG_RELEASE_STRATEGY='delete'
+
+# Make the release command create a commit with the changelog changes. Requires CHANGELOG_GIT_STAGE_RELEASE to be enabled as well.
+CHANGELOG_RELEASE_COMMIT=true
+
 CHANGELOG_GIT_STAGE_RELEASE=true
 CHANGELOG_GIT_STAGE_CHANGE=true
 
