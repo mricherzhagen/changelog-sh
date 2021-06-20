@@ -1,5 +1,10 @@
 # What's new?
 
+## [3.0.0] - 2021-06-20
+### Changed
+- Change default folder for storing changes from `changelog` to `.changelog`. Make sure to migrate your changes to the new folder.
+- Change Configuration prefix from `CHANGELOG_` to `CHANGELOGSH_`. Make sure to update your configuration files.
+
 ## [2.7.0] - 2021-06-20
 ### Added
 - Specify `bump-major`, `bump-minor` or `bump-patch` as a version argument and the respective number will be increased.
