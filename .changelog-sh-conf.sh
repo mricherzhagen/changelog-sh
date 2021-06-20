@@ -34,6 +34,9 @@ CHANGELOG_CHECK_VERSION_GT=true;
 # Will reject version numbers that are smaller or equal to the latest version. Requires CHANGELOG_CHECK_VERSION_GT to be enabled as well.
 CHANGELOG_FORCE_VERSION_GT=false;
 
+# Check that the specified version is an increment of the latest version and no version was skipped
+CHANGELOG_CHECK_BUMP_INCREMENTAL=true
+
 #INTERNAL
 CHANGELOG_MKTEMP_OPTIONS="--tmpdir changelog-sh-tmp.XXXXXXXX"
 CHANGELOG_DIFF_OPTIONS="--color=always -u"
