@@ -135,3 +135,9 @@ change preview
 ```shell
 change release {version}
 ```
+
+#### Version bumping
+
+The `preview`, `full-review` and `release` commands can take the arguments `bump-major`, `bump-minor` and `bump-patch` to automatically calculate the next version number.
+
+You can also use `bump-major-something` to append `-something` to the generated version.
