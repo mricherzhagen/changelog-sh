@@ -69,7 +69,7 @@ function _changelogsh_release {
       exit 1
     fi
     if [ $CHANGELOG_RELEASE_TAG = true ]; then
-      TAGNAME="v$version"
+      TAGNAME="`echo "$CHANGELOG_RELEASE_TAG_NAME" | sed "s/#VERSION#/$version/"`"
       if git tag "$TAGNAME"; then
         echo "Created tag $TAGNAME"
       else

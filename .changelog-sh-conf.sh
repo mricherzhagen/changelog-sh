@@ -13,6 +13,7 @@ CHANGELOG_RELEASE_COMMIT_MESSAGE="Version #VERSION#"
 
 # Make the release command also create a tag on the newly created commit. Requires CHANGELOG_RELEASE_COMMIT to be enabled as well.
 CHANGELOG_RELEASE_TAG=true
+CHANGELOG_RELEASE_TAG_NAME='v#VERSION#'
 
 CHANGELOG_GIT_STAGE_RELEASE=true
 CHANGELOG_GIT_STAGE_CHANGE=true
