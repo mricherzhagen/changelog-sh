@@ -7,9 +7,9 @@ function _changelogsh_execute_conf_file {
 
 #Always read default config from $CHANGE
 _changelogsh_execute_conf_file $CHANGE/.changelog-sh-conf.sh
-if TOPLEVEL_GIT="`git rev-parse --show-toplevel >/dev/null 2>&1`" ; then
+if TOPLEVEL_GIT="`git rev-parse --show-toplevel  2>/dev/null`" ; then
   CHANGELOGSH_INSIDE_GIT=true
-  if [ -f $TOPLEVEL_GIT/.changelog-sh-conf ]; then
+  if [ -f $TOPLEVEL_GIT/.changelog-sh-conf.sh ]; then
     export CHANGELOGSH_CONF_FILE=$TOPLEVEL_GIT/.changelog-sh-conf.sh
     
     #Overwrite defaults with per project settings
