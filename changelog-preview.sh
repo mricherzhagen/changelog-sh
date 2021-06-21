@@ -48,7 +48,11 @@ function _changelogsh_preview {
   fi
   
   echo "$CHANGELOGSH_HEADER"
-  _changelogsh_preview_unreleased "$version"
+  if [ ! -z "$version" ]; then
+    _changelogsh_preview_unreleased "$version"
+  else
+    _changelogsh_preview_unreleased
+  fi
   
   if [ ! -z "$CHANGELOGSH_TEMPFILE" -a -s "$CHANGELOGSH_TEMPFILE" ]; then
     cat $CHANGELOGSH_TEMPFILE

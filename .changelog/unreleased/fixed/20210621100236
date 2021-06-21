@@ -1,0 +1,1 @@
+Error if `change full-preview` was called without version argument.
