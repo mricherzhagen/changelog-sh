@@ -44,6 +44,10 @@ function _changelogsh_check_new_version_gt {
       local latestVersion
       # Code from https://unix.stackexchange.com/a/278377/50708
       latestVersion="`_changelogsh_get_latest_version`"
+      if [ -z "$latestVersion" ]; then
+          >&2 echo "WARNING: Couldn't determine latest version from CHANGELOG.md"
+          return 0
+      fi
       if [ "$latestVersion" != "" ] && ! _changelogsh_compare_semver_gt "$1" "$latestVersion"; then
           if [ $CHANGELOGSH_FORCE_VERSION_GT = true ]; then
               >&2 echo "ERROR: $1 is not larger than the latest version $latestVersion."
@@ -147,6 +151,10 @@ function _changelogsh_get_next_version {
 function _changelogsh_parse_version_arg {
   if [[ "$1" =~ ^bump- ]]; then
     local latestVersion="`_changelogsh_get_latest_version`"
+    if [ -z "$latestVersion" ]; then
+      >&2 echo "ERROR: Cannot bump version because latest version couldn't be determined from CHANGELOG.md"
+      return 1
+    fi
   fi
   case "$1" in
     bump-major)

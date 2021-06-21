@@ -4,19 +4,24 @@ function _changelogsh_preview {
     
   if [ "$#" -gt 0 ]; then
     version="`_changelogsh_parse_version_arg $1`"
+    if [ $? -ne 0 ]; then
+      exit 1
+    fi
     _changelogsh_force_semver "$version"
     _changelogsh_check_new_version_gt "$version"
     
     if [ $CHANGELOGSH_CHECK_BUMP_INCREMENTAL = true ] ; then
       local latestVersion="`_changelogsh_get_latest_version`"
-      local MAJOR_BUMP="`_changelogsh_get_next_version "$latestVersion" "major"`"
-      local MINOR_BUMP="`_changelogsh_get_next_version "$latestVersion" "minor"`"
-      local PATCH_BUMP="`_changelogsh_get_next_version "$latestVersion" "patch"`"
-      local trimmedVersion="${version%-*}"
-      if [ "$trimmedVersion" != "$MAJOR_BUMP" -a "$trimmedVersion" != "$MINOR_BUMP" -a "$trimmedVersion" != "$PATCH_BUMP" ]; then
-        read -p "The specified version $version is not an increment of the latest version $latestVersion. Do you really want to skip a version? [y/N] " -r
-        if ! [ "$REPLY" = "y" -o "$REPLY" = "yes" ]; then
+      if [ ! -z "$latestVersion" ]; then
+        local MAJOR_BUMP="`_changelogsh_get_next_version "$latestVersion" "major"`"
+        local MINOR_BUMP="`_changelogsh_get_next_version "$latestVersion" "minor"`"
+        local PATCH_BUMP="`_changelogsh_get_next_version "$latestVersion" "patch"`"
+        local trimmedVersion="${version%-*}"
+        if [ "$trimmedVersion" != "$MAJOR_BUMP" -a "$trimmedVersion" != "$MINOR_BUMP" -a "$trimmedVersion" != "$PATCH_BUMP" ]; then
+          read -p "The specified version $version is not an increment of the latest version $latestVersion. Do you really want to skip a version? [y/N] " -r
+          if ! [ "$REPLY" = "y" -o "$REPLY" = "yes" ]; then
             exit 1;
+          fi
         fi
       fi
     fi
