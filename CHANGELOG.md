@@ -1,5 +1,11 @@
 # What's new?
 
+## [3.0.3] - 2021-06-21
+### Fixed
+- `.changelog-sh-conf.sh` not being read from git repositories.
+- Some errors if latest version couldn't be determined from CHANGELOG.md.
+- Error if `change full-preview` was called without version argument.
+
 ## [3.0.2] - 2021-06-20
 ### Added
 - Section about `bump-*` to `README.md`.
