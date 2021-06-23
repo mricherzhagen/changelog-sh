@@ -92,7 +92,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/mricherzhagen/changelog-sh
 #### via wget
 
 ```shell
-sh -c "$(wget https://raw.githubusercontent.com/mricherzhagen/changelog-sh/master/tools/install.sh)"
+sh -c "$(wget -O - https://raw.githubusercontent.com/mricherzhagen/changelog-sh/master/tools/install.sh)"
 ```
 
 ### Shell autocompletion
