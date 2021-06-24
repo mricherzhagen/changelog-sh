@@ -17,7 +17,7 @@ function _changelogsh_release {
   _changelogsh_check_new_version_gt $version
   local version_was_problematic=$?
   
-  if grep -Fq "## [$version]" $CHANGELOGSH_FILENAME; then
+  if [ -s "$CHANGELOGSH_FILENAME" ] && grep -Fq "## [$version]" $CHANGELOGSH_FILENAME; then
     >&2 echo "Error: Version $version already exists in $CHANGELOGSH_FILENAME";
     exit 1;
   fi

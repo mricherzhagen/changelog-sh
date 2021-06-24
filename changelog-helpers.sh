@@ -31,6 +31,9 @@ function _changelogsh_force_semver {
 }
 
 function _changelogsh_get_latest_version {
+  if [ ! -s "$CHANGELOGSH_FILENAME" ]; then
+    return
+  fi
   echo "`sed -n -E 's/^## \[(.+)\].*$/\1/p' "$CHANGELOGSH_FILENAME" | head -n1`"
   return
   if [ -z "${CHANGELOGSH_LATEST_VERSION_CACHE+x}" ]; then

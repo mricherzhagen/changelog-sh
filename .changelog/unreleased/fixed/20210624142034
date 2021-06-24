@@ -1,0 +1,1 @@
+Error messages from `grep` and `sed` if `CHANGELOG.md` file did not exist when calling `change release`
