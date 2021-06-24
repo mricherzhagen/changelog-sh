@@ -97,7 +97,8 @@ function _changelogsh_release {
     fi
 
     # Code for getting remote name from https://stackoverflow.com/a/9753364/2256700
-    REMOTE_NAME=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} | sed 's@/.*$@@')
+    REMOTE_NAME=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null | sed 's@/.*$@@')
+    REMOTE_NAME="${REMOTE_NAME:-<remote>}"
     
     echo ""
     echo "    git push $REMOTE_NAME"
