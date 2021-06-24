@@ -31,10 +31,10 @@ function _changelogsh_force_semver {
 }
 
 function _changelogsh_get_latest_version {
-  echo "`sed -n -E 's/^## \[(.+)\].*$/\1/p' CHANGELOG.md | head -n1`"
+  echo "`sed -n -E 's/^## \[(.+)\].*$/\1/p' "$CHANGELOGSH_FILENAME" | head -n1`"
   return
   if [ -z "${CHANGELOGSH_LATEST_VERSION_CACHE+x}" ]; then
-    CHANGELOGSH_LATEST_VERSION_CACHE="`sed -n -E 's/^## \[(.+)\].*$/\1/p' CHANGELOG.md | head -n1`"
+    CHANGELOGSH_LATEST_VERSION_CACHE="`sed -n -E 's/^## \[(.+)\].*$/\1/p' "$CHANGELOGSH_FILENAME" | head -n1`"
   fi
   echo "$CHANGELOGSH_LATEST_VERSION_CACHE"
 }
@@ -45,7 +45,7 @@ function _changelogsh_check_new_version_gt {
       # Code from https://unix.stackexchange.com/a/278377/50708
       latestVersion="`_changelogsh_get_latest_version`"
       if [ -z "$latestVersion" ]; then
-          >&2 echo "WARNING: Couldn't determine latest version from CHANGELOG.md"
+          >&2 echo "WARNING: Couldn't determine latest version from $CHANGELOGSH_FILENAME"
           return 0
       fi
       if [ "$latestVersion" != "" ] && ! _changelogsh_compare_semver_gt "$1" "$latestVersion"; then
@@ -152,7 +152,7 @@ function _changelogsh_parse_version_arg {
   if [[ "$1" =~ ^bump- ]]; then
     local latestVersion="`_changelogsh_get_latest_version`"
     if [ -z "$latestVersion" ]; then
-      >&2 echo "ERROR: Cannot bump version because latest version couldn't be determined from CHANGELOG.md"
+      >&2 echo "ERROR: Cannot bump version because latest version couldn't be determined from $CHANGELOGSH_FILENAME"
       return 1
     fi
   fi
