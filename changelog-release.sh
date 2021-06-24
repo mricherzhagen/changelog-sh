@@ -33,6 +33,10 @@ function _changelogsh_release {
           exit 1;
       fi
     fi
+    if [ ! -z "$(git ls-files  --others --exclude-standard $CHANGELOGSH_FOLDER/unreleased)" ]; then
+      >&2 echo "ERROR: You have uncommited change files in $CHANGELOGSH_FOLDER/unreleased. Commit or remove them before creating a release."
+      exit 1
+    fi
   fi
  
   NEW_CHANGELOG=`mktemp $CHANGELOGSH_MKTEMP_OPTIONS`
