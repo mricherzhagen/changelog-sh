@@ -64,6 +64,9 @@ function _changelogsh_preview_unreleased {
   raw_version="Unreleased"
   if [ "$#" -gt 0 ]; then
     raw_version="`_changelogsh_parse_version_arg $1`"
+    if [ $? -ne 0 ]; then
+      exit 1
+    fi
     _changelogsh_force_semver "$raw_version"
   fi
 

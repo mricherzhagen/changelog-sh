@@ -1,0 +1,1 @@
+Now only one error message is displayed if `bump-*` fails because of missing `CHANGELOG.md`.

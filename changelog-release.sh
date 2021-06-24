@@ -13,6 +13,9 @@ function _changelogsh_release {
   fi
 
   version="`_changelogsh_parse_version_arg $1`"
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
   _changelogsh_force_semver $version
   _changelogsh_check_new_version_gt $version
   local version_was_problematic=$?
