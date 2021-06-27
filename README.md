@@ -4,8 +4,6 @@
 
 This is a **fork** of [whitecloakph/changelog-sh](https://github.com/whitecloakph/changelog-sh) with *extensive* changes to the functionality. See the [CHANGELOG.md](CHANGELOG.md) for a list of changes.
 
-**WARNING:** as of now all `change` commands and also the `change` autocompletion functions will `source`/execute any `.changelog-sh-conf.sh` file in git repositories that `change` is used in. Beware of the security implications and only run in trusted repositories.
-
 ## Motivation
 
 Maintaining a `CHANGELOG.md` is annoying because it's prone to merge conflict. Multiple developer adding line to a single file will confuse git as to which change should go first.
