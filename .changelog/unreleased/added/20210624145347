@@ -1,1 +1,0 @@
-Check for untracked files in `.changelog/unreleased` when calling `change release`.

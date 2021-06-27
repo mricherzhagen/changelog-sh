@@ -1,5 +1,16 @@
 # What's new?
 
+## [3.0.4] - 2021-06-27
+### Added
+- Check for untracked files in `.changelog/unreleased` when calling `change release`.
+
+### Fixed
+- `wget` command in `README.md` was missing `-O -` argument
+- `CHANGELOGSH_FILENAME` not being used at all places where it should.
+- Error messages from `grep` and `sed` if `CHANGELOG.md` file did not exist when calling `change release`
+- Output of `change release` if no remote could be found. Substitute with `<remote>`.
+- Now only one error message is displayed if `bump-*` fails because of missing `CHANGELOG.md`.
+
 ## [3.0.3] - 2021-06-21
 ### Fixed
 - `.changelog-sh-conf.sh` not being read from git repositories.
