@@ -30,9 +30,9 @@ Security"
 CHANGELOGSH_FORCE_SEMVER=true
 # Set to true to make sure that new versions are greater than the latest version in CHANGELOG.md. Requires semantic versioning.
 # Will ask to continue if version number is equal or lower to latest version
-CHANGELOGSH_CHECK_VERSION_GT=true;
+CHANGELOGSH_CHECK_VERSION_GT=true
 # Will reject version numbers that are smaller or equal to the latest version. Requires CHANGELOGSH_CHECK_VERSION_GT to be enabled as well.
-CHANGELOGSH_FORCE_VERSION_GT=false;
+CHANGELOGSH_FORCE_VERSION_GT=false
 
 # Check that the specified version is an increment of the latest version and no version was skipped
 CHANGELOGSH_CHECK_BUMP_INCREMENTAL=true
