@@ -1,6 +1,19 @@
 #compdef change changelog.sh
 
 _change_completion() {
+  local getVersionBumps='
+  source $CHANGE/changelog-helpers.sh
+  source $CHANGE/changelog-read-conf.sh
+  latestVersion="`_changelogsh_get_latest_version`"
+  echo LATEST_VERSION="$latestVersion"
+  if [ ! -z "$latestVersion" ]; then
+    echo MAJOR_BUMP="`_changelogsh_get_next_version "$latestVersion" "major"`"
+    echo MINOR_BUMP="`_changelogsh_get_next_version "$latestVersion" "minor"`"
+    echo PATCH_BUMP="`_changelogsh_get_next_version "$latestVersion" "patch"`"
+  else
+    exit 1
+  fi
+'
   if [ $CURRENT -gt 3 ]; then
     return
   fi
@@ -14,7 +27,23 @@ _change_completion() {
       _values 'changetype' `echo $CHANGELOGSH_ALLOWED_CHANGETYPES`
     ;;
     release|preview|full-preview)
-      _values 'version' 'bump-major' 'bump-minor' 'bump-patch'
+      local versionbumps="$(CHANGE=$CHANGE bash -c "$getVersionBumps"; exit $? )"
+      eval "$versionbumps"
+      if [ ! -z "$LATEST_VERSION" ]; then
+        _message -r "Latest version: $LATEST_VERSION"
+        local -a versionbumps
+        versionbumps=(\
+          "bump-patch:Bump patch version to $PATCH_BUMP"\
+          "bump-minor:Bump minor version to $MINOR_BUMP"\
+          "bump-major:Bump major version to $MAJOR_BUMP"\
+          "$PATCH_BUMP:Bump patch version"\
+          "$MINOR_BUMP:Bump minor version"\
+          "$MAJOR_BUMP:Bump major version"\
+        )
+        _describe 'version' versionbumps
+      else
+        _message -r "Enter Version number. Could't determine latest version."
+      fi
     ;;
     *)
     local -a subcmds

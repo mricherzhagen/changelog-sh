@@ -35,7 +35,15 @@ _change_completions() {
         COMPREPLY=($(compgen -W "$TYPE_SUGGESTIONS" -- "${COMP_WORDS[2]}"))
       ;;
       release|preview|full-preview)
-        COMPREPLY=($(compgen -W "bump-major bump-minor bump-patch" -- "${COMP_WORDS[2]}"))
+        source $CHANGE/changelog-helpers.sh
+        source $CHANGE/changelog-read-conf.sh
+        latestVersion="`_changelogsh_get_latest_version`"
+        if [ ! -z "$latestVersion" ]; then
+          local MAJOR_BUMP="`_changelogsh_get_next_version "$latestVersion" "major"`"
+          local MINOR_BUMP="`_changelogsh_get_next_version "$latestVersion" "minor"`"
+          local PATCH_BUMP="`_changelogsh_get_next_version "$latestVersion" "patch"`"
+          COMPREPLY=($(compgen -W "bump-major $MAJOR_BUMP bump-minor $MINOR_BUMP bump-patch $PATCH_BUMP" -- "${COMP_WORDS[2]}"))
+        fi
       ;;
     esac
   fi
