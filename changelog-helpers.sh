@@ -34,18 +34,12 @@ function _changelogsh_get_latest_version {
   if [ ! -s "$CHANGELOGSH_FILENAME" ]; then
     return
   fi
-  echo "`sed -n -E 's/^## \[(.+)\].*$/\1/p' "$CHANGELOGSH_FILENAME" | head -n1`"
-  return
-  if [ -z "${CHANGELOGSH_LATEST_VERSION_CACHE+x}" ]; then
-    CHANGELOGSH_LATEST_VERSION_CACHE="`sed -n -E 's/^## \[(.+)\].*$/\1/p' "$CHANGELOGSH_FILENAME" | head -n1`"
-  fi
-  echo "$CHANGELOGSH_LATEST_VERSION_CACHE"
+  echo "$(grep --only-matching -m 1 -E '^## \[[^]]+\]' "$CHANGELOGSH_FILENAME"  | sed -E 's/^## \[(.+)\]$/\1/')"
 }
 
 function _changelogsh_check_new_version_gt {
   if [ $CHANGELOGSH_CHECK_VERSION_GT = true ]; then
       local latestVersion
-      # Code from https://unix.stackexchange.com/a/278377/50708
       latestVersion="`_changelogsh_get_latest_version`"
       if [ -z "$latestVersion" ]; then
           >&2 echo "WARNING: Couldn't determine latest version from $CHANGELOGSH_FILENAME"

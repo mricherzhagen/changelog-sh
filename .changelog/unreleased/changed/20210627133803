@@ -1,0 +1,1 @@
+`_changelogsh_get_latest_version` does not parse the full changelog to determine the latest version number anymore.
