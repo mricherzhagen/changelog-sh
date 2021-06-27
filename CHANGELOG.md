@@ -1,5 +1,15 @@
 # What's new?
 
+## [4.0.0] - 2021-06-27
+### Added
+- Dependency: `shdotenv` tool from https://github.com/ko1nksm/shdotenv to parse configuration file without executing it
+
+### Removed
+- Security warning in `README.md` about `.changelog-sh-conf.sh`
+
+### Security
+- The `.changelog-sh-conf.sh` configuration file is not executed with `source` anymore.
+
 ## [3.0.4] - 2021-06-27
 ### Added
 - Check for untracked files in `.changelog/unreleased` when calling `change release`.

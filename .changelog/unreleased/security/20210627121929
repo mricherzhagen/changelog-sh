@@ -1,1 +1,0 @@
-The `.changelog-sh-conf.sh` configuration file is not executed with `source` anymore.
