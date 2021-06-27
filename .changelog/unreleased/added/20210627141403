@@ -1,1 +1,0 @@
-`CHANGELOGSH_EDITOR` option to overwrite the default `$EDITOR` variable to determine the editor to spawn.

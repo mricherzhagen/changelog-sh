@@ -1,5 +1,15 @@
 # What's new?
 
+## [4.1.0] - 2021-06-27
+### Added
+- Calling `change new <type>` without a change message will spawn text editor.
+- `CHANGELOGSH_EDITOR` option to overwrite the default `$EDITOR` variable to determine the editor to spawn.
+
+### Changed
+- Autocompletion now also suggest the bumped version numbers themself.
+- ZSH-Autocompletion also prints the latest version number when available.
+- `_changelogsh_get_latest_version` does not parse the full changelog to determine the latest version number anymore.
+
 ## [4.0.0] - 2021-06-27
 ### Added
 - Dependency: `shdotenv` tool from https://github.com/ko1nksm/shdotenv to parse configuration file without executing it
