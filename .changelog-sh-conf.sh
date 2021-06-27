@@ -37,6 +37,9 @@ CHANGELOGSH_FORCE_VERSION_GT=false
 # Check that the specified version is an increment of the latest version and no version was skipped
 CHANGELOGSH_CHECK_BUMP_INCREMENTAL=true
 
+# Uncomment to specify the editor that change should use. Defaults to $EDITOR when not specified
+# CHANGELOGSH_EDITOR=nano
+
 #INTERNAL
 CHANGELOGSH_MKTEMP_OPTIONS="--tmpdir changelog-sh-tmp.XXXXXXXX"
 CHANGELOGSH_DIFF_OPTIONS="--color=always -u"

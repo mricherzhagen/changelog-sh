@@ -27,10 +27,21 @@ function _changelogsh_new {
   fi
 
   if [ "$#" -ge 2 ]; then
-    echo ${@:2} > "$CHANGELOGSH_FOLDER/unreleased/$type/$timestamp"
+      local CHANGEMESSAGE="$(echo ${@:2})"
+  else
+    local TEMPFILE=$(mktemp $CHANGELOGSH_MKTEMP_OPTIONS)
+    echo '# Write your changelog entry for change type "'"$type"'" as a single line. Lines beginning with # will be ignored.' > $TEMPFILE
+    ${CHANGELOGSH_EDITOR:-$EDITOR} $TEMPFILE
+    local CHANGEMESSAGE="$(grep -v -E '^\s*#.+$' $TEMPFILE)"
+    rm $TEMPFILE
+  fi
+  if [ ! -z "$CHANGEMESSAGE" ]; then
+    echo $CHANGEMESSAGE > "$CHANGELOGSH_FOLDER/unreleased/$type/$timestamp"
     if [ $CHANGELOGSH_GIT_STAGE_CHANGE = true ]; then
-        git add "$CHANGELOGSH_FOLDER/unreleased/$type/$timestamp"
+      git add "$CHANGELOGSH_FOLDER/unreleased/$type/$timestamp"
     fi
+  else
+    echo >&2 "No change message was provided. Aborting."
   fi
 
 }
