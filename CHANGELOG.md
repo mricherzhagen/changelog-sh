@@ -1,5 +1,9 @@
 # What's new?
 
+## [4.1.1] - 2021-06-29
+### Fixed
+- `.changelog-sh-conf.sh` was ignored, because `shdotenv` was missing the `-o` argument.
+
 ## [4.1.0] - 2021-06-27
 ### Added
 - Calling `change new <type>` without a change message will spawn text editor.

@@ -1,1 +1,0 @@
-`.changelog-sh-conf.sh` was ignored, because `shdotenv` was missing the `-o` argument.
