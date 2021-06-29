@@ -22,7 +22,7 @@ function _changelogsh_execute_conf_file {
     CHANGELOGSH_MKTEMP_OPTIONS
     CHANGELOGSH_DIFF_OPTIONS
   "
-  eval "$(sh $CHANGE/ext/shdotenv -e $1 -g "`echo $VALIDOPTIONS | sed -E 's/\s+/|/g'`")"
+  eval "$(sh $CHANGE/ext/shdotenv -o -e $1 -g "`echo $VALIDOPTIONS | sed -E 's/\s+/|/g'`")"
 }
 
 #Always read default config from $CHANGE
