@@ -32,7 +32,7 @@ function _changelogsh_new {
     local TEMPFILE=$(mktemp $CHANGELOGSH_MKTEMP_OPTIONS)
     echo '# Write your changelog entry for change type "'"$type"'" as a single line. Lines beginning with # will be ignored.' > $TEMPFILE
     ${CHANGELOGSH_EDITOR:-$EDITOR} $TEMPFILE
-    local CHANGEMESSAGE="$(grep -v -E '^\s*#.+$' $TEMPFILE)"
+    local CHANGEMESSAGE="$(grep -v -E '^[[:space:]]*#.+$' $TEMPFILE)"
     rm $TEMPFILE
   fi
   if [ ! -z "$CHANGEMESSAGE" ]; then
