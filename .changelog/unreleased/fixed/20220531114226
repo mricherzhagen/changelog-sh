@@ -1,1 +1,0 @@
-Errors on OSX because `sed -E` does not support `\s`. Using `[[:space:]]` instead.

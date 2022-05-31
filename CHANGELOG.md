@@ -1,5 +1,10 @@
 # What's new?
 
+## [4.1.3] - 2022-05-31
+### Fixed
+- Errors on OSX because `sed -E` does not support `\s`. Using `[[:space:]]` instead.
+- Install script now recommends alias using `bash` instead of `sh`, because of errors on Ubuntu.
+
 ## [4.1.2] - 2022-03-23
 ### Fixed
 - Awk errors with ZSH autocompletion
