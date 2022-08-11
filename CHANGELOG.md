@@ -1,5 +1,9 @@
 # What's new?
 
+## [4.1.4] - 2022-08-11
+### Changed
+- Add newlines to editor tempfile
+
 ## [4.1.3] - 2022-05-31
 ### Fixed
 - Errors on OSX because `sed -E` does not support `\s`. Using `[[:space:]]` instead.
