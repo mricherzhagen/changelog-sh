@@ -1,5 +1,9 @@
 # What's new?
 
+## [4.2.0] - 2022-10-28
+### Fixed
+- Always execute commands from toplevel git folder
+
 ## [4.1.4] - 2022-08-11
 ### Changed
 - Add newlines to editor tempfile
