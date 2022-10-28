@@ -46,6 +46,10 @@ _change_completions() {
         fi
       ;;
     esac
+  elif [ "$COMP_CWORD" = "3" ]; then
+    if [ "${COMP_WORDS[1]}" = "release" ]; then
+      COMPREPLY=($(compgen -W "stage commit tag" -- "${COMP_WORDS[3]}"))
+    fi
   fi
 
 }
