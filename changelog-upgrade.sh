@@ -11,7 +11,7 @@ function _changelogsh_upgrade {
   git fetch --tags
 
   # Get latest tag name
-  latestTag=$(git describe --tags --match "v[0-9]*" --abbrev=0 HEAD)
+  latestTag=$(git -c 'versionsort.suffix=-' tag --sort='-version:refname' -l 'v[0-9]*' | head -n 1)
   
   git diff $CHANGELOGSH_DIFF_OPTIONS $latestTag CHANGELOG.md
 
