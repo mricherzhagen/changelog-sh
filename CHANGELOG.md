@@ -1,5 +1,16 @@
 # What's new?
 
+## [5.0.0] - 2023-07-07
+### Added
+- Added `release` argument to specify the steps to execute. Valid steps are `stage`, `commit`, `tag`.
+- Experimental automatic pushing of commit and tag with push_commit, push_tag and push release step.
+
+### Changed
+- Print remaining steps when error occurs during release
+
+### Fixed
+- Fix `change upgrade` not upgrading to latest tag
+
 ## [4.2.0] - 2022-10-28
 ### Fixed
 - Always execute commands from toplevel git folder
