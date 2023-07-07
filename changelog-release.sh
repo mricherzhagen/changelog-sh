@@ -109,18 +109,23 @@ function _changelogsh_release {
     fi
   fi
 
+  local _error_occured=0
+
   if [ $CHANGELOGSH_INSIDE_GIT = true -a $CHANGELOGSH_RELEASE_COMMIT = true -a $CHANGELOGSH_GIT_STAGE_RELEASE = true ]; then
     if [ $_stop_at -ge $_STEP_COMMIT ]; then
       if git commit -m "${CHANGELOGSH_RELEASE_COMMIT_MESSAGE//#VERSION#/$version}"; then
         echo "Created version commit"
       else
-        >&2 echo "ERROR: An error occured creating the release commit. Check your release manually!"
-        exit 1
+        >&2 echo "ERROR: An error occured creating the release commit."
+        echo "Check your release manually! Then continue with:"
+        echo ""
+        _stop_at=0
+        _error_occured=1
       fi
-    else
-      echo "    git commit -m '${CHANGELOGSH_RELEASE_COMMIT_MESSAGE//#VERSION#/$version}'"
     fi
-    if [ $_stop_at -eq $_STEP_COMMIT ]; then
+    if [ $_stop_at -lt $_STEP_COMMIT ]; then
+      echo "    git commit -m '${CHANGELOGSH_RELEASE_COMMIT_MESSAGE//#VERSION#/$version}'"
+    elif [ $_stop_at -eq $_STEP_COMMIT ]; then
       echo "Please review changes before continuing with:"
       echo ""
     fi
@@ -131,10 +136,14 @@ function _changelogsh_release {
         if git tag "$TAGNAME"; then
           echo "Created tag $TAGNAME"
         else
-          >&2 echo "ERROR: An error occured creating the tag $TAGNAME. Check your release manually!"
-          exit 1;
+          >&2 echo "ERROR: An error occured creating the tag $TAGNAME."
+          echo "Check your release manually! Then continue with:"
+          echo ""
+          _stop_at=0
+          _error_occured=2
         fi
-      else
+      fi
+      if [ $_stop_at -lt $_STEP_TAG ]; then
         echo "    git tag '$TAGNAME'"
       fi
     fi
@@ -150,6 +159,9 @@ function _changelogsh_release {
     echo "    git push $REMOTE_NAME"
     if [ $CHANGELOGSH_RELEASE_TAG = true ]; then
       echo "    git push $REMOTE_NAME $TAGNAME"
+    fi
+    if [ $_error_occured -ne 0 ]; then
+      exit $_error_occured
     fi
   fi
 }
