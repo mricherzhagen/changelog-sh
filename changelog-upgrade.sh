@@ -13,9 +13,9 @@ function _changelogsh_upgrade {
   # Get latest tag name
   latestTag=$(git -c 'versionsort.suffix=-' tag --sort='-version:refname' -l 'v[0-9]*' | head -n 1)
   
-  git diff $CHANGELOGSH_DIFF_OPTIONS $latestTag CHANGELOG.md
+  git diff $CHANGELOGSH_DIFF_OPTIONS "$latestTag" CHANGELOG.md
 
   # Checkout latest tag
   # Code from https://stackoverflow.com/a/45652159/2256700
-  git -c advice.detachedHead=false checkout $latestTag
+  git -c advice.detachedHead=false checkout "$latestTag"
 }

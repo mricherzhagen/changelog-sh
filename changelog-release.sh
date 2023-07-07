@@ -48,57 +48,57 @@ function _changelogsh_release {
     esac
   fi
 
-  version="`_changelogsh_parse_version_arg $1`"
+  version="`_changelogsh_parse_version_arg "$1"`"
   if [ $? -ne 0 ]; then
     exit 1
   fi
-  _changelogsh_force_semver $version
-  _changelogsh_check_new_version_gt $version
+  _changelogsh_force_semver "$version"
+  _changelogsh_check_new_version_gt "$version"
   local version_was_problematic=$?
   
-  if [ -s "$CHANGELOGSH_FILENAME" ] && grep -Fq "## [$version]" $CHANGELOGSH_FILENAME; then
+  if [ -s "$CHANGELOGSH_FILENAME" ] && grep -Fq "## [$version]" "$CHANGELOGSH_FILENAME"; then
     >&2 echo "Error: Version $version already exists in $CHANGELOGSH_FILENAME";
     exit 1;
   fi
   
-  if [ $CHANGELOGSH_INSIDE_GIT = true -a $CHANGELOGSH_RELEASE_COMMIT = true ]; then
-    if [ ! $CHANGELOGSH_GIT_STAGE_RELEASE = true ]; then
+  if [ "$CHANGELOGSH_INSIDE_GIT" = true ] && [ "$CHANGELOGSH_RELEASE_COMMIT" = true ]; then
+    if [ ! "$CHANGELOGSH_GIT_STAGE_RELEASE" = true ]; then
       >&2 echo "ERROR: If CHANGELOGSH_RELEASE_COMMIT is true you also need to enable the CHANGELOGSH_GIT_STAGE_RELEASE option."
       exit 1;
     fi
     if [ ! "`git diff --staged`" = "" ]; then
       read -p "You already have staged changes. Are you sure you want to continue creating a release commit? [y/N] " -r
-      if ! [ "$REPLY" = "y" -o "$REPLY" = "yes" ]; then
+      if ! [ "$REPLY" = "y" ] || [ "$REPLY" = "yes" ]; then
           exit 1;
       fi
     fi
-    if [ ! -z "$(git ls-files  --others --exclude-standard $CHANGELOGSH_FOLDER/unreleased)" ]; then
+    if [ ! -z "$(git ls-files  --others --exclude-standard "$CHANGELOGSH_FOLDER/unreleased")" ]; then
       >&2 echo "ERROR: You have uncommited change files in $CHANGELOGSH_FOLDER/unreleased. Commit or remove them before creating a release."
       exit 1
     fi
   fi
  
   NEW_CHANGELOG=`mktemp $CHANGELOGSH_MKTEMP_OPTIONS`
-  if _changelogsh_preview $version > $NEW_CHANGELOG; then
+  if _changelogsh_preview "$version" > "$NEW_CHANGELOG"; then
     diff $CHANGELOGSH_DIFF_OPTIONS "$CHANGELOGSH_FILENAME" "$NEW_CHANGELOG"
-    mv $NEW_CHANGELOG "$CHANGELOGSH_FILENAME"
-    if [ $CHANGELOGSH_GIT_STAGE_RELEASE = true ]; then
+    mv "$NEW_CHANGELOG" "$CHANGELOGSH_FILENAME"
+    if [ "$CHANGELOGSH_GIT_STAGE_RELEASE" = true ]; then
         git add "$CHANGELOGSH_FILENAME"
     fi
   else
     >&2 echo "ERROR: Release aborted."
-    rm $NEW_CHANGELOG
+    rm "$NEW_CHANGELOG"
     exit 1
   fi
   if [ "$CHANGELOGSH_RELEASE_STRATEGY" = 'move' ]; then
       expanded=$(_changelogsh_raw_to_expanded $version)
-      if [ $CHANGELOGSH_GIT_STAGE_RELEASE = true ]; then
+      if [ "$CHANGELOGSH_GIT_STAGE_RELEASE" = true ]; then
         git mv "$CHANGELOGSH_FOLDER/unreleased" "$CHANGELOGSH_FOLDER/$expanded"
       else
         mv "$CHANGELOGSH_FOLDER/unreleased" "$CHANGELOGSH_FOLDER/$expanded"
       fi
   elif [ "$CHANGELOGSH_RELEASE_STRATEGY" = 'delete' ]; then
-    if [ $CHANGELOGSH_GIT_STAGE_RELEASE = true ]; then
+    if [ "$CHANGELOGSH_GIT_STAGE_RELEASE" = true ]; then
       git rm -r "$CHANGELOGSH_FOLDER/unreleased"
     else
       rm -r "$CHANGELOGSH_FOLDER/unreleased"
@@ -123,7 +123,7 @@ function _changelogsh_release {
 
   local _error_occured=0
 
-  if [ $CHANGELOGSH_INSIDE_GIT = true -a $CHANGELOGSH_RELEASE_COMMIT = true -a $CHANGELOGSH_GIT_STAGE_RELEASE = true ]; then
+  if [ "$CHANGELOGSH_INSIDE_GIT" = true ] && [ "$CHANGELOGSH_RELEASE_COMMIT" = true ] && [ "$CHANGELOGSH_GIT_STAGE_RELEASE" = true ]; then
     if [ $_stop_at -ge $_STEP_COMMIT ]; then
       if git commit -m "${CHANGELOGSH_RELEASE_COMMIT_MESSAGE//#VERSION#/$version}"; then
         echo "Created version commit"
@@ -142,7 +142,7 @@ function _changelogsh_release {
       echo ""
     fi
 
-    if [ $CHANGELOGSH_RELEASE_TAG = true ]; then
+    if [ "$CHANGELOGSH_RELEASE_TAG" = true ]; then
       TAGNAME="${CHANGELOGSH_RELEASE_TAG_NAME//#VERSION#/$version}"
       if [ $_stop_at -ge $_STEP_TAG ]; then
         if git tag "$TAGNAME"; then
@@ -165,7 +165,7 @@ function _changelogsh_release {
     fi
 
     # Code for getting remote name from https://stackoverflow.com/a/9753364/2256700
-    REMOTE_NAME=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null | sed 's@/.*$@@')
+    REMOTE_NAME=$(git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null | sed 's@/.*$@@')
     REMOTE_NAME="${REMOTE_NAME:-<remote>}"
     if [ $_stop_at -ge $_STEP_PUSH_COMMIT ]; then
       if [ "$REMOTE_NAME" = '<remote>' ]; then
@@ -189,7 +189,7 @@ function _changelogsh_release {
       echo "    git push $REMOTE_NAME"
     fi
 
-    if [ $CHANGELOGSH_RELEASE_TAG = true ]; then
+    if [ "$CHANGELOGSH_RELEASE_TAG" = true ]; then
       if [ $_stop_at -ge $_STEP_PUSH_TAG ]; then
         if git push "$REMOTE_NAME" "$TAGNAME"; then
           echo "Pushed Version tag"

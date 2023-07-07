@@ -30,11 +30,11 @@ _changelogsh_execute_conf_file $CHANGE/.changelog-sh-conf.sh
 if TOPLEVEL_GIT="`git rev-parse --show-toplevel  2>/dev/null`" ; then
   CHANGELOGSH_INSIDE_GIT=true
   cd "$TOPLEVEL_GIT" || { echo "Failed to change to toplevel git directory $TOPLEVEL_GIT" >&2; exit 1; }
-  if [ -f $TOPLEVEL_GIT/.changelog-sh-conf.sh ]; then
+  if [ -f "$TOPLEVEL_GIT/.changelog-sh-conf.sh" ]; then
     export CHANGELOGSH_CONF_FILE=$TOPLEVEL_GIT/.changelog-sh-conf.sh
     
     #Overwrite defaults with per project settings
-    _changelogsh_execute_conf_file $CHANGELOGSH_CONF_FILE
+    _changelogsh_execute_conf_file "$CHANGELOGSH_CONF_FILE"
   fi
 else
   CHANGELOGSH_INSIDE_GIT=false
