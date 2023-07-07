@@ -54,6 +54,9 @@ _change_completion() {
             "stage:Stage changes to changelog files without committing."\
             "commit:Stage and commit changes without creating tag."\
             "tag:Stage, Commit changes and create tag. (default)"\
+            "push_commit:Create commit and tag and push commit."\
+            #"push_tag:Push commit and tag"\
+            "push:Push commit and tag"\
           )
           _describe 'steps' releasesteps
         fi

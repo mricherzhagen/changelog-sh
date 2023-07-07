@@ -15,6 +15,9 @@ function _changelogsh_release {
   local _STEP_STAGE=1
   local _STEP_COMMIT=2
   local _STEP_TAG=3
+  local _STEP_PUSH_COMMIT=4
+  local _STEP_PUSH_TAG=5
+  local _STEP_PUSH=6
 
   local _stop_at=_STEP_TAG
   
@@ -29,8 +32,17 @@ function _changelogsh_release {
       "tag")
         _stop_at=$_STEP_TAG
         ;;
+      "push_commit")
+        _stop_at=$_STEP_PUSH_COMMIT
+        ;;
+      #"push_tag")
+      #  _stop_at=$_STEP_PUSH_TAG
+      #  ;;
+      "push")
+        _stop_at=$_STEP_PUSH
+        ;;
       *)
-        >&2 echo "Invalid step argument '$2': Use 'stage', 'commit' or 'tag'"
+        >&2 echo "Invalid step argument '$2': Use 'stage', 'commit', 'tag', 'push_commit' or 'push"
         exit 1
         ;;
     esac
@@ -155,10 +167,46 @@ function _changelogsh_release {
     # Code for getting remote name from https://stackoverflow.com/a/9753364/2256700
     REMOTE_NAME=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null | sed 's@/.*$@@')
     REMOTE_NAME="${REMOTE_NAME:-<remote>}"
-    
-    echo "    git push $REMOTE_NAME"
+    if [ $_stop_at -ge $_STEP_PUSH_COMMIT ]; then
+      if [ "$REMOTE_NAME" = '<remote>' ]; then
+        >&2 echo "ERROR: Could not determine remote for pushing."
+        echo "Continue with:"
+        echo ""
+        _stop_at=0
+      fi
+    fi
+    if [ $_stop_at -ge $_STEP_PUSH_COMMIT ]; then
+      if git push "$REMOTE_NAME"; then
+        echo "Pushed Version commit"
+      else
+        >&2 echo "ERROR: Could not push to remote."
+        echo "Fix error and continue with:"
+        echo ""
+        _stop_at=0
+      fi
+    fi
+    if [ $_stop_at -le $_STEP_PUSH_COMMIT ]; then
+      echo "    git push $REMOTE_NAME"
+    fi
+
     if [ $CHANGELOGSH_RELEASE_TAG = true ]; then
-      echo "    git push $REMOTE_NAME $TAGNAME"
+      if [ $_stop_at -ge $_STEP_PUSH_TAG ]; then
+        if git push "$REMOTE_NAME" "$TAGNAME"; then
+          echo "Pushed Version tag"
+        else
+          >&2 echo "ERROR: Could not push tag to remote."
+          echo "Fix error and continue with:"
+          echo ""
+          _stop_at=0
+        fi
+      fi
+      if [ $_stop_at -le $_STEP_PUSH_COMMIT ]; then
+        echo "    git push $REMOTE_NAME $TAGNAME"
+      fi
+    fi
+    if [ $_stop_at -ge $_STEP_PUSH_COMMIT ]; then
+      echo "Thanks for putting trust into this software. You really shouldn't, though."
+      echo "Review your changes."
     fi
     if [ $_error_occured -ne 0 ]; then
       exit $_error_occured
