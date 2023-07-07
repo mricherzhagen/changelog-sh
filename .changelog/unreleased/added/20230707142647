@@ -1,0 +1,1 @@
+Added `release` argument to specify the steps to execute. Valid steps are `stage`, `commit`, `tag`.

@@ -12,6 +12,42 @@ function _changelogsh_release {
     return
   fi
 
+  local _STEP_STAGE=1
+  local _STEP_COMMIT=2
+  local _STEP_TAG=3
+  local _STEP_PUSH_COMMIT=4
+  local _STEP_PUSH_TAG=5
+  local _STEP_PUSH=6
+
+  local _stop_at=_STEP_TAG
+  
+  if [ "$#" -ge 2 ]; then
+    case "$2" in 
+      "stage")
+        _stop_at=$_STEP_STAGE
+        ;;
+      "commit")
+        _stop_at=$_STEP_COMMIT
+        ;;
+      "tag")
+        _stop_at=$_STEP_TAG
+        ;;
+      "push_commit")
+        _stop_at=$_STEP_PUSH_COMMIT
+        ;;
+      #"push_tag")
+      #  _stop_at=$_STEP_PUSH_TAG
+      #  ;;
+      "push")
+        _stop_at=$_STEP_PUSH
+        ;;
+      *)
+        >&2 echo "Invalid step argument '$2': Use 'stage', 'commit', 'tag', 'push_commit' or 'push"
+        exit 1
+        ;;
+    esac
+  fi
+
   version="`_changelogsh_parse_version_arg $1`"
   if [ $? -ne 0 ]; then
     exit 1
@@ -71,46 +107,109 @@ function _changelogsh_release {
       >&2 echo "ERORR: \$CHANGELOGSH_RELEASE_STRATEGY has to be either 'move' or 'delete'. Keeping unreleased changes.";
       exit 1;
   fi
+  if [ $version_was_problematic -ne 0 ]; then
+    echo "Because your version number $version was lower than the latest version the changes were not committed automatically."
+    echo "Maybe you need to move the created version to a different spot in the CHANGELOG.md?"
+    echo "Verify the changes and then continue with:"
+    echo ""
+    _stop_at=$_STEP_STAGE
+  else
+    if [ $_stop_at -eq $_STEP_STAGE ]; then
+      echo "Staged changes."
+      echo "Please review changes before continuing with:"
+      echo ""
+    fi
+  fi
+
+  local _error_occured=0
+
   if [ $CHANGELOGSH_INSIDE_GIT = true -a $CHANGELOGSH_RELEASE_COMMIT = true -a $CHANGELOGSH_GIT_STAGE_RELEASE = true ]; then
-    if [ $version_was_problematic -eq 0 ]; then
-      if git commit -m "`echo "$CHANGELOGSH_RELEASE_COMMIT_MESSAGE" | sed "s/#VERSION#/$version/"`"; then
+    if [ $_stop_at -ge $_STEP_COMMIT ]; then
+      if git commit -m "${CHANGELOGSH_RELEASE_COMMIT_MESSAGE//#VERSION#/$version}"; then
         echo "Created version commit"
       else
-        >&2 echo "ERROR: An error occured creating the release commit. Check your release manually!"
-        exit 1
+        >&2 echo "ERROR: An error occured creating the release commit."
+        echo "Check your release manually! Then continue with:"
+        echo ""
+        _stop_at=0
+        _error_occured=1
       fi
-      if [ $CHANGELOGSH_RELEASE_TAG = true ]; then
-        TAGNAME="`echo "$CHANGELOGSH_RELEASE_TAG_NAME" | sed "s/#VERSION#/$version/"`"
+    fi
+    if [ $_stop_at -lt $_STEP_COMMIT ]; then
+      echo "    git commit -m '${CHANGELOGSH_RELEASE_COMMIT_MESSAGE//#VERSION#/$version}'"
+    elif [ $_stop_at -eq $_STEP_COMMIT ]; then
+      echo "Please review changes before continuing with:"
+      echo ""
+    fi
+
+    if [ $CHANGELOGSH_RELEASE_TAG = true ]; then
+      TAGNAME="${CHANGELOGSH_RELEASE_TAG_NAME//#VERSION#/$version}"
+      if [ $_stop_at -ge $_STEP_TAG ]; then
         if git tag "$TAGNAME"; then
           echo "Created tag $TAGNAME"
         else
-          >&2 echo "ERROR: An error occured creating the tag $TAGNAME. Check your release manually!"
-          exit 1;
+          >&2 echo "ERROR: An error occured creating the tag $TAGNAME."
+          echo "Check your release manually! Then continue with:"
+          echo ""
+          _stop_at=0
+          _error_occured=2
         fi
       fi
-      echo "Please review changes before pushing with:"
-    else
-      echo "Because your version number $version was lower than the latest version the changes were not committed automatically."
-      echo "Maybe you need to move the created version to a different spot in the CHANGELOG.md?"
-      echo "Verify the changes and then confirm them with:"
-      echo ""
-      echo "    git commit -m '`echo "$CHANGELOGSH_RELEASE_COMMIT_MESSAGE" | sed "s/#VERSION#/$version/"`"
-      if [ $CHANGELOGSH_RELEASE_TAG = true ]; then
-        TAGNAME="`echo "$CHANGELOGSH_RELEASE_TAG_NAME" | sed "s/#VERSION#/$version/"`"
+      if [ $_stop_at -lt $_STEP_TAG ]; then
         echo "    git tag '$TAGNAME'"
       fi
+    fi
+    if [ $_stop_at -eq $_STEP_TAG ]; then
+      echo "Please review changes before continuing with:"
       echo ""
-      echo "then continue with:"
     fi
 
     # Code for getting remote name from https://stackoverflow.com/a/9753364/2256700
     REMOTE_NAME=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null | sed 's@/.*$@@')
     REMOTE_NAME="${REMOTE_NAME:-<remote>}"
-    
-    echo ""
-    echo "    git push $REMOTE_NAME"
+    if [ $_stop_at -ge $_STEP_PUSH_COMMIT ]; then
+      if [ "$REMOTE_NAME" = '<remote>' ]; then
+        >&2 echo "ERROR: Could not determine remote for pushing."
+        echo "Continue with:"
+        echo ""
+        _stop_at=0
+      fi
+    fi
+    if [ $_stop_at -ge $_STEP_PUSH_COMMIT ]; then
+      if git push "$REMOTE_NAME"; then
+        echo "Pushed Version commit"
+      else
+        >&2 echo "ERROR: Could not push to remote."
+        echo "Fix error and continue with:"
+        echo ""
+        _stop_at=0
+      fi
+    fi
+    if [ $_stop_at -le $_STEP_PUSH_COMMIT ]; then
+      echo "    git push $REMOTE_NAME"
+    fi
+
     if [ $CHANGELOGSH_RELEASE_TAG = true ]; then
-      echo "    git push $REMOTE_NAME $TAGNAME"
+      if [ $_stop_at -ge $_STEP_PUSH_TAG ]; then
+        if git push "$REMOTE_NAME" "$TAGNAME"; then
+          echo "Pushed Version tag"
+        else
+          >&2 echo "ERROR: Could not push tag to remote."
+          echo "Fix error and continue with:"
+          echo ""
+          _stop_at=0
+        fi
+      fi
+      if [ $_stop_at -le $_STEP_PUSH_COMMIT ]; then
+        echo "    git push $REMOTE_NAME $TAGNAME"
+      fi
+    fi
+    if [ $_stop_at -ge $_STEP_PUSH_COMMIT ]; then
+      echo "Thanks for putting trust into this software. You really shouldn't, though."
+      echo "Review your changes."
+    fi
+    if [ $_error_occured -ne 0 ]; then
+      exit $_error_occured
     fi
   fi
 }
