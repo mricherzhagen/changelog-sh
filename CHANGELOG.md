@@ -1,5 +1,10 @@
 # What's new?
 
+## [5.0.1] - 2024-01-12
+### Fixed
+- Error when executing `change release` without step argument
+- Some `shellcheck` errors and warnings
+
 ## [5.0.0] - 2023-07-07
 ### Added
 - Added `release` argument to specify the steps to execute. Valid steps are `stage`, `commit`, `tag`.
