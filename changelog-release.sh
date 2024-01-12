@@ -19,7 +19,7 @@ function _changelogsh_release {
   local _STEP_PUSH_TAG=5
   local _STEP_PUSH=6
 
-  local _stop_at=_STEP_TAG
+  local _stop_at=$_STEP_TAG
   
   if [ "$#" -ge 2 ]; then
     case "$2" in 
